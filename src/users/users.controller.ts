@@ -14,28 +14,33 @@ export class UsersController {
         private authService: AuthService
     ) {}
     
-    @Post("/signup")
-    createUser(@Body() body: CreateUserDto) {
+    @Post('signup')
+    signup(@Body() body: CreateUserDto) {
        return this.authService.signup(body.email, body.password);
     }
 
-    @Get(":id")
-    findUser(@Param("id") id: string) {
+    @Post('signin')
+    signin(@Body() body: CreateUserDto) {
+        return this.authService.signin(body.email, body.password);
+    }
+
+    @Get(':id')
+    findUser(@Param('id') id: string) {
         return this.usersService.findOne(parseInt(id));
     }
 
     @Get()
-    findAllUsers(@Query("email") email: string) {
+    findAllUsers(@Query('email') email: string) {
         return this.usersService.find(email);
     }
 
-    @Delete(":id")
-    deleteUser(@Param("id") id: string) {
+    @Delete(':id')
+    deleteUser(@Param('id') id: string) {
         return this.usersService.remove(parseInt(id));
     }
 
-    @Patch(":id")
-    updateUser(@Param("id") id: string, @Body() body: UpdateUserDto) {
+    @Patch(':id')
+    updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
         return this.usersService.update(parseInt(id), body)
     }
 }
