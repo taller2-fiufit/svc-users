@@ -12,6 +12,12 @@ export class User {
     @Column()
     password: string;
 
+    @Column()
+    fullname: string;
+
+    @Column()
+    isAdmin: boolean;
+
     @AfterInsert()
     logInert() {
         console.log('Insertado Usuario con id:', this.id);
