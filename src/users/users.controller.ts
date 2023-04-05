@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Param, Query, Delete, Patch, Session, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, Query, Delete, Patch, Session, UseGuards, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -9,7 +9,9 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
 import { AuthGuard } from '../guards/auth.guard';
 
-@Controller('users')
+
+//TODO: Pensar bien el admin
+@Controller('')
 @Serialize(UserDto)
 export class UsersController {
     constructor(
@@ -17,33 +19,43 @@ export class UsersController {
         private authService: AuthService
     ) {}
 
-    @Post('')
+    @Post('users')
     async signup(@Body() body: CreateUserDto) {
        return this.authService.signup(body.email, body.password, body.fullname);
     }
 
-    @Get('me')
+    //TODO: Investigar pipes
+    @Post('admin')
+    @UseGuards(AuthGuard)
+    createAdminUser(@CurrentUser() user: User, @Body() body: CreateUserDto) {
+        if (!user.isAdmin) {
+            throw new UnauthorizedException();
+        }
+        return this.authService.createAdmin(body.email, body.password, body.fullname);
+    }
+
+    @Get('users/me')
     @UseGuards(AuthGuard)
     whoAmI(@CurrentUser() user: User) {
         return user;
     }
 
-    @Get(':id')
+    @Get('users/:id')
     findUser(@Param('id') id: string) {
         return this.usersService.findOne(parseInt(id));
     }
 
-    @Get('')
+    @Get('users')
     findAllUsers(@Query('email') email: string) {
         return this.usersService.find(email);
     }
 
-    @Delete(':id')
+    @Delete('users/:id')
     deleteUser(@Param('id') id: string) {
         return this.usersService.remove(parseInt(id));
     }
 
-    @Patch(':id')
+    @Patch('users/:id')
     updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
         return this.usersService.update(parseInt(id), body)
     }
