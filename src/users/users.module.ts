@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Injectable, Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { User } from './users.entity';
 import { AuthService } from './auth.service';
@@ -30,4 +30,15 @@ import { AuthController } from './auth.controller';
     }
   ]
 })
-export class UsersModule {}
+
+export class UsersModule {
+  constructor(private authService: AuthService, private userService: UsersService) {}
+
+  //TODO: validar que sea la mejor manera y en ese caso ofuscar el pass
+  async onModuleInit() {
+    const defaultAdmin = await this.userService.find("admin@kinetix.com");
+    if (!defaultAdmin.length) {
+      this.authService.createAdmin("admin@kinetix.com", "admin", "Kinetix Admin");
+    }
+  }
+}
