@@ -22,23 +22,29 @@ import { AuthController } from './auth.controller';
   ],
   controllers: [UsersController, AuthController],
   providers: [
-    UsersService, 
-    AuthService, 
+    UsersService,
+    AuthService,
     {
       provide: APP_INTERCEPTOR,
-      useClass: CurrentUserInterceptor
-    }
-  ]
+      useClass: CurrentUserInterceptor,
+    },
+  ],
 })
-
 export class UsersModule {
-  constructor(private authService: AuthService, private userService: UsersService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UsersService,
+  ) {}
 
   //TODO: validar que sea la mejor manera y en ese caso ofuscar el pass
   async onModuleInit() {
-    const defaultAdmin = await this.userService.find("admin@kinetix.com");
+    const defaultAdmin = await this.userService.find('admin@kinetix.com');
     if (!defaultAdmin.length) {
-      this.authService.createAdmin("admin@kinetix.com", "admin", "Kinetix Admin");
+      this.authService.createAdmin(
+        'admin@kinetix.com',
+        'admin',
+        'Kinetix Admin',
+      );
     }
   }
 }

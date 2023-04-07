@@ -4,20 +4,18 @@ import { AuthService } from './auth.service';
 
 @Controller('tokens')
 export class AuthController {
-    constructor(
-        private authService: AuthService
-    ) {}
-    
-    //TODO: Entregar token
-    @Post('')
-    async signin(@Body() body: SigninUserDto) {
-        const user = await this.authService.signin(body.email, body.password);
-        return user;
-    }
+  constructor(private authService: AuthService) {}
 
-    // TODO: Invalidar token
-    @Delete('')
-    signout() {
-        return null
-    }
+  //TODO: Entregar token
+  @Post('')
+  async signin(@Body() body: SigninUserDto) {
+    const user = await this.authService.signin(body.email, body.password);
+    return user;
+  }
+
+  // TODO: Invalidar token
+  @Delete('')
+  signout() {
+    return null;
+  }
 }
