@@ -11,7 +11,7 @@ async function bootstrap() {
     }),
   );
 
-  app.enableCors({origin: true});
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('Users')
