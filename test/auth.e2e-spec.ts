@@ -31,4 +31,30 @@ describe('Sistema de Autenticación', () => {
         expect(fullname).toEqual(FULLNAME);
       })
   });
+
+  it('creo un nuevo usuario y luego obtengo su información', async () => {
+    const EMAIL = 'prueba@kinetix.com';
+    const FULLNAME = 'Prueba Kinetix';
+    const PASSWORD = 'Temporal1234';
+
+    await request(app.getHttpServer())
+      .post('/users')
+      .send({ email: EMAIL, password: PASSWORD, fullname: FULLNAME })
+      .expect(201)
+    
+    let response = await request(app.getHttpServer())
+      .post('/tokens')
+      .send({ email: EMAIL, password: PASSWORD })
+      .expect(201)
+
+    const token = response.body['access_token'];
+    expect(token).toBeDefined;
+
+    response = await request(app.getHttpServer())
+      .get('/users/me')
+      .set('Authorization', 'Bearer ' + token)
+      .expect(200)
+    
+    expect(response.body['email']).toEqual(EMAIL);
+  });
 });
