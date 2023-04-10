@@ -11,6 +11,8 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('Users')
     .setDescription('Documentación de API Users')
