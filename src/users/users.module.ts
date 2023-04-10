@@ -38,14 +38,13 @@ export class UsersModule {
     private userService: UsersService,
   ) {}
 
-  //TODO: validar que sea la mejor manera y en ese caso ofuscar el pass
   async onModuleInit() {
-    const defaultAdmin = await this.userService.find('admin@kinetix.com');
+    const defaultAdmin = await this.userService.find(process.env.DEFAULT_ADMIN_EMAIL);
     if (!defaultAdmin.length) {
       this.authService.createAdmin(
-        'admin@kinetix.com',
-        'admin',
-        'Kinetix Admin',
+        process.env.DEFAULT_ADMIN_EMAIL,
+        process.env.DEFAULT_ADMIN_PASSWORD,
+        process.env.DEFAULT_ADMIN_FULLNAME,
       );
     }
   }
