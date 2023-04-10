@@ -3,6 +3,6 @@ import { join } from "path"
 
 global.beforeEach(async () => {
     try {
-        await rm(join(__dirname, '..','db.users.test'));
+        await rm(join(__dirname, '..', process.env.DB_NAME));
     } catch(err) {}
 });
