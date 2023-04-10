@@ -25,7 +25,7 @@ export class User {
   isAdmin: boolean;
 
   @AfterInsert()
-  logInert() {
+  logInsert() {
     console.log('Insertado Usuario con id:', this.id);
   }
 
