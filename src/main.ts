@@ -5,6 +5,9 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // TODO: Sacar cuando este el gateway
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('Users')
     .setDescription('Documentación de API Users')
