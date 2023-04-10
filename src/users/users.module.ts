@@ -43,7 +43,7 @@ export class UsersModule {
       this.authService.createAdmin(
         'admin@kinetix.com',
         'admin',
-        'Kinetix Admin',
+        'Kinetix Admin1',
       );
     }
   }
