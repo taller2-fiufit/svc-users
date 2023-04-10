@@ -6,11 +6,10 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  //TODO: Entregar token
   @Post('')
   async signin(@Body() body: SigninUserDto) {
-    const user = await this.authService.signin(body.email, body.password);
-    return user;
+    const token = await this.authService.signin(body.email, body.password);
+    return token;
   }
 
   // TODO: Invalidar token
