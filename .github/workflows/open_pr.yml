@@ -1,5 +1,12 @@
 name: "Create preview"
 
+env:
+  DB_NAME: ${{ vars.DB_NAME }}
+  DEFAULT_ADMIN_EMAIL: ${{ vars.DEFAULT_ADMIN_EMAIL }}
+  DEFAULT_ADMIN_FULLNAME: ${{ vars.DEFAULT_ADMIN_FULLNAME }}
+  DEFAULT_ADMIN_PASSWORD: ${{ vars.DEFAULT_ADMIN_PASSWORD }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
 on:
   pull_request:
     branches: [ main ]
@@ -10,6 +17,7 @@ permissions:
 jobs:
   preview:
     runs-on: ubuntu-latest
+    environment: test
     steps:
       - name: Context
         uses: okteto/context@latest

@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: okteto.dev/svc-users-v2
+  name: svc-users-v2
   # https://www.okteto.com/docs/cloud/ssl
   annotations:
     dev.okteto.com/generate-host: svc-users-v2
