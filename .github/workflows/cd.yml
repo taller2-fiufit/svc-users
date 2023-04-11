@@ -1,0 +1,24 @@
+name: Deploy
+on:
+    workflow_run:
+      workflows: [ Integration ]
+      branches: [ main ]
+      types: [ completed ]
+jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      if: ${{ github.event.workflow_run.conclusion == 'success' }}
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+        - name: Context
+          uses: okteto/context@latest
+          with:
+            token: ${{ secrets.OKTETO_TOKEN_FEDE }}
+        - name: Deploy
+          uses: okteto/pipeline@latest
+          with:
+            name: svc-users-v2
+            timeout: 15m
