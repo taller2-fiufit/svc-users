@@ -8,6 +8,8 @@ async function bootstrap() {
   // TODO: Sacar cuando este el gateway
   app.enableCors();
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('Users')
     .setDescription('Documentación de API Users')
