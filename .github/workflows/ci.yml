@@ -1,5 +1,8 @@
 name: Integration
 
+env:
+  DB_NAME: test.db
+
 on:
     push:
         branches: [ main ]
