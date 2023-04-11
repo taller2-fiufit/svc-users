@@ -1,7 +1,11 @@
 name: Integration
 
 env:
-  DB_NAME: test.db
+  DB_NAME: ${{ vars.DB_NAME }}
+  DEFAULT_ADMIN_EMAIL: ${{ vars.DEFAULT_ADMIN_EMAIL }}
+  DEFAULT_ADMIN_FULLNAME: ${{ vars.DEFAULT_ADMIN_FULLNAME }}
+  DEFAULT_ADMIN_PASSWORD: ${{ vars.DEFAULT_ADMIN_PASSWORD }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
 on:
     push:
