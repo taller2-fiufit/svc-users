@@ -2,9 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { Repository } from 'typeorm';
+import { User } from './../src/users/users.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('Sistema de Autenticación', () => {
   let app: INestApplication;
+  let usersRepository: Repository<User>
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -12,6 +16,8 @@ describe('Sistema de Autenticación', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    usersRepository = app.get(getRepositoryToken(User));
+    await usersRepository.delete({});
     await app.init();
   });
 

@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/users.entity';
 import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -17,8 +18,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
-          type: 'sqlite',
-          database: config.get<string>('DB_NAME'),
+          type: 'postgres',
+          database: config.get('DB_NAME'),
+          username: config.get('DB_USER'),
+          password: config.get('DB_PASSWORD'),
+          host: config.get('DB_HOST'),
+          port: config.get('DB_PORT'),
           entities: [User],
           synchronize: true
         }
