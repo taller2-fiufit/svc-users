@@ -60,8 +60,8 @@ export class UsersController {
   }
 
   @Get('users')
-  findAllUsers(@Query('email') email: string) {
-    return this.usersService.find(email);
+  findAllUsers() {
+    return this.usersService.findAll();
   }
 
   @Delete('users/:id')
