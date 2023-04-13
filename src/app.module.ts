@@ -6,7 +6,6 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/users.entity';
 import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
