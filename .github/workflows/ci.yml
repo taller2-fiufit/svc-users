@@ -44,6 +44,8 @@ jobs:
               run: npm run lint
             - name: Run Unit Tests
               run: npm test
+            - name: Imprimo variables
+              run: echo $DB_PASSWORD
             - name: Run Funcional Tests
               run: npm run test:e2e
             - name: Generate Coverage
