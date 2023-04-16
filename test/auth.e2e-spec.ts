@@ -8,7 +8,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('Sistema de Autenticación', () => {
   let app: INestApplication;
-  let usersRepository: Repository<User>
+  let usersRepository: Repository<User>;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -35,7 +35,7 @@ describe('Sistema de Autenticación', () => {
         expect(id).toBeDefined();
         expect(email).toEqual(EMAIL);
         expect(fullname).toEqual(FULLNAME);
-      })
+      });
   });
 
   it('creo un nuevo usuario y luego obtengo su información', async () => {
@@ -46,12 +46,12 @@ describe('Sistema de Autenticación', () => {
     await request(app.getHttpServer())
       .post('/users')
       .send({ email: EMAIL, password: PASSWORD, fullname: FULLNAME })
-      .expect(201)
-    
+      .expect(201);
+
     let response = await request(app.getHttpServer())
       .post('/tokens')
       .send({ email: EMAIL, password: PASSWORD })
-      .expect(201)
+      .expect(201);
 
     const token = response.body['access_token'];
     expect(token).toBeDefined;
@@ -59,8 +59,8 @@ describe('Sistema de Autenticación', () => {
     response = await request(app.getHttpServer())
       .get('/users/me')
       .set('Authorization', 'Bearer ' + token)
-      .expect(200)
-    
+      .expect(200);
+
     expect(response.body['email']).toEqual(EMAIL);
   });
 });
