@@ -14,7 +14,7 @@ spec:
       labels:
         app: svc-users-2
     spec:
-      init-containers:
+      initContainers:
         - name: init-db
           image: okteto.dev/svc-users-v2
           command: [npm]
