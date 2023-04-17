@@ -39,6 +39,7 @@ export class UsersModule {
   ) {}
 
   async onModuleInit() {
+    console.log(process.env.DB_USER);
     const defaultAdmin = await this.userService.find(
       process.env.DEFAULT_ADMIN_EMAIL,
     );
