@@ -6,16 +6,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: svc-users-2
+      app: postgres
   template:
     metadata:
       labels:
-        app: svc-users-2
+        app: postgres
     spec:
       containers:
         - name: postgres
           image: postgres:15.2 
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: Always
           ports:
             - containerPort: 5432 
           envFrom:
@@ -38,9 +38,9 @@ kind: Service
 metadata:
   name: postgres # Sets service name
   labels:
-    app: svc-users-2 # Labels and Selectors
+    app: postgres # Labels and Selectors
 spec:
   ports:
     - port: 5432 # Sets port to run the postgres application
   selector:
-    app: svc-users-2
+    app: postgres
