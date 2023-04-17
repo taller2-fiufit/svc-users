@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres # Sets Deployment name
+  name: postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: svc-users-2
   template:
     metadata:
       labels:
-        app: postgres
+        app: svc-users-2
     spec:
       containers:
         - name: postgres
-          image: postgres:15.2 # Sets Image
+          image: postgres:15.2 
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 5432 # Exposes container port
+            - containerPort: 5432 
           envFrom:
             - configMapRef:
-                name: postgres-config
+                name: env-config
           env:
             - name: PGDATA
               value: /var/lib/postgresql/data
@@ -38,9 +38,9 @@ kind: Service
 metadata:
   name: postgres # Sets service name
   labels:
-    app: postgres # Labels and Selectors
+    app: svc-users-2 # Labels and Selectors
 spec:
   ports:
     - port: 5432 # Sets port to run the postgres application
   selector:
-    app: postgres
+    app: svc-users-2

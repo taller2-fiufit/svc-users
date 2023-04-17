@@ -1,4 +1,4 @@
-name: app
+name: svc-users-2
 
 # The build section defines how to build the images of your development environment
 # More info: https://www.okteto.com/docs/reference/manifest/#build
@@ -15,22 +15,7 @@ build:
 # More info: https://www.okteto.com/docs/reference/manifest/#deploy
 deploy:
   - okteto build -t okteto.dev/svc-users-v2
+  - kubectl delete secret "secrets" || true
+  - kubectl create secret generic "secrets" --from-literal="JWT_SECRET"="${JWT_SECRET}"
   - kubectl apply -f k8s
-# The dependencies section defines other git repositories to be deployed as part of your development environment
-# More info: https://www.okteto.com/docs/reference/manifest/#dependencies
-# dependencies:
-#   - https://github.com/okteto/sample
-
-# The dev section defines how to activate a development container
-# More info: https://www.okteto.com/docs/reference/manifest/#dev
-dev:
-  app-deployment:
-    image: ${OKTETO_BUILD_MAIN_IMAGE}
-    sync:
-      - .:/app
-    forward:
-      - 80:80
-    reverse:
-      - 9000:9000
-    volumes:
-      - /root/.cache/pip
+  - kubectl rollout restart deployment backend-deployment
