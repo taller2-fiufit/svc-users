@@ -26,4 +26,6 @@ COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
+RUN npm run typeorm migration:run
+
 CMD ["node", "./dist/main"]
