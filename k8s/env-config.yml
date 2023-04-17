@@ -14,3 +14,4 @@ data:
   DEFAULT_ADMIN_PASSWORD: admin
   DEFAULT_ADMIN_FULLNAME: "Admin Kinetix"
   POSTGRES_HOST_AUTH_METHOD: trust
+  POSTGRES_DB: users_db
