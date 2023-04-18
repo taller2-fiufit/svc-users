@@ -20,5 +20,5 @@ jobs:
         - name: Deploy
           uses: okteto/pipeline@latest
           with:
-            name: svc-users-v2
+            name: svc-users
             timeout: 15m
