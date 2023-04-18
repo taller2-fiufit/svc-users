@@ -1,32 +1,21 @@
-name: svc-users
+name: svc-users-2
 
 # The build section defines how to build the images of your development environment
 # More info: https://www.okteto.com/docs/reference/manifest/#build
-# build:
-#   my-service:
-#     context: .
-
+build:
+  # You can use the following env vars to refer to this image in your deploy commands:
+  #  - OKTETO_BUILD_FASTAPI-EXAMPLE_REGISTRY: image registry
+  #  - OKTETO_BUILD_FASTAPI-EXAMPLE_REPOSITORY: image repo
+  #  - OKTETO_BUILD_FASTAPI-EXAMPLE_IMAGE: image name
+  #  - OKTETO_BUILD_FASTAPI-EXAMPLE_TAG: image tag
+  main:
+    context: .
 
 # The deploy section defines how to deploy your development environment
 # More info: https://www.okteto.com/docs/reference/manifest/#deploy
 deploy:
+  - okteto build -t okteto.dev/svc-users-v2
+  - kubectl delete secret "secrets" || true
+  - kubectl create secret generic "secrets" --from-literal="JWT_SECRET"="${JWT_SECRET}"
   - kubectl apply -f k8s
-
-# The dependencies section defines other git repositories to be deployed as part of your development environment
-# More info: https://www.okteto.com/docs/reference/manifest/#dependencies
-# dependencies:
-#   - https://github.com/okteto/sample
-# The dev section defines how to activate a development container
-# More info: https://www.okteto.com/docs/reference/manifest/#dev
-# dev:
-#   sample:
-#     image: okteto/dev:latest
-#     command: bash
-#     workdir: /usr/src/app
-#     sync:
-#       - .:/usr/src/app
-#     environment:
-#       - name=$USER
-#     forward:
-#       - 8080:80
-
+  - kubectl rollout restart deployment backend-deployment

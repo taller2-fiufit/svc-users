@@ -18,8 +18,8 @@ import { AuthController } from './auth.controller';
           global: true,
           secret: process.env.JWT_SECRET,
           signOptions: { expiresIn: '6000s' },
-        }
-      }
+        };
+      },
     }),
   ],
   controllers: [UsersController, AuthController],
@@ -39,7 +39,10 @@ export class UsersModule {
   ) {}
 
   async onModuleInit() {
-    const defaultAdmin = await this.userService.find(process.env.DEFAULT_ADMIN_EMAIL);
+    console.log(process.env.DB_USER);
+    const defaultAdmin = await this.userService.find(
+      process.env.DEFAULT_ADMIN_EMAIL,
+    );
     if (!defaultAdmin.length) {
       this.authService.createAdmin(
         process.env.DEFAULT_ADMIN_EMAIL,

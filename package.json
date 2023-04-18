@@ -1,23 +1,24 @@
 {
   "name": "svc-users",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
+  "description": "API de Usuarios",
+  "author": "Kinetix",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "cross-env NODE_ENV=development nest start",
-    "start:dev": "cross-env NODE_ENV=development nest start --watch",
-    "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:dev": "cross-env NODE_ENV=development npm run typeorm migration:run && cross-env NODE_ENV=development nest start --watch",
+    "start:debug": "npm run typeorm migration:run && cross-env NODE_ENV=development nest start --debug --watch",
+    "start:prod": "npm run typeorm migration:run && node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "cross-env NODE_ENV=test jest --watch --maxWorkers=1",
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
     "test:debug": "cross-env NODE_ENV=test node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --maxWorkers=1"
+    "test:e2e": "cross-env NODE_ENV=test npm run typeorm migration:run && cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --maxWorkers=1 --detectOpenHandles",
+    "typeorm": "typeorm-ts-node-commonjs -d src/data-source.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -32,6 +33,7 @@
     "class-validator": "^0.14.0",
     "cookie-session": "^2.0.0",
     "cross-env": "^7.0.3",
+    "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "sqlite3": "^5.1.6",
@@ -56,7 +58,7 @@
     "supertest": "^6.1.3",
     "ts-jest": "29.0.3",
     "ts-loader": "^9.2.3",
-    "ts-node": "^10.0.0",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "4.1.1",
     "typescript": "^4.7.4"
   },
