@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: env-config
   labels:
-    app: svc-users-2
+    app: svc-users
 data:
   DB_NAME: users_db
   DB_USER: postgres
