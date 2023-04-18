@@ -14,7 +14,7 @@ build:
 # The deploy section defines how to deploy your development environment
 # More info: https://www.okteto.com/docs/reference/manifest/#deploy
 deploy:
-  - okteto build -t okteto.dev/svc-users-v2
+  - okteto build -t okteto.dev/svc-users
   - kubectl delete secret "secrets" || true
   - kubectl create secret generic "secrets" --from-literal="JWT_SECRET"="${JWT_SECRET}"
   - kubectl apply -f k8s
