@@ -14,11 +14,6 @@ spec:
       labels:
         app: svc-users-2
     spec:
-      initContainers:
-        - name: init-db
-          image: okteto.dev/svc-users-v2
-          command: [npm]
-          args: [run typeorm migration:run]
       containers:
         - name: backend
           image: okteto.dev/svc-users-v2
