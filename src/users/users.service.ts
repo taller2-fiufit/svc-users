@@ -25,7 +25,7 @@ export class UsersService {
   }
 
   findAll() {
-    return this.repo.find({ where: {isAdmin: false}})
+    return this.repo.find({ where: { isAdmin: false } });
   }
 
   async update(id: number, attrs: Partial<User>) {
