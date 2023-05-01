@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  name: users-backend-deployment
   labels:
     app: svc-users
 spec:
@@ -15,12 +15,12 @@ spec:
         app: svc-users
     spec:
       containers:
-        - name: backend
+        - name: users-backend
           image: okteto.dev/svc-users
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: env-config
+                name: users-env-config
           env:
             - name: JWT_SECRET
               valueFrom:
@@ -38,7 +38,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: users-backend-service
 spec:
   selector:
     app: svc-users
