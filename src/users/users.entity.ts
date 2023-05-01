@@ -1,10 +1,11 @@
 import {
   AfterInsert,
-  AfterRemove,
+  BeforeRemove,
   AfterUpdate,
   Column,
   Entity,
   PrimaryGeneratedColumn,
+  CreateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -24,18 +25,21 @@ export class User {
   @Column()
   isAdmin: boolean;
 
+  @CreateDateColumn()
+  createdAt: Date;
+
   @AfterInsert()
   logInsert() {
-    console.log('Insertado Usuario con id:', this.id);
+    console.log('Insertado Usuario:', this.email);
   }
 
   @AfterUpdate()
   logUpdate() {
-    console.log('Actualizado Usuario con id:', this.id);
+    console.log('Actualizado Usuario:', this.email);
   }
 
-  @AfterRemove()
+  @BeforeRemove()
   logRemove() {
-    console.log('Eliminado usuario con id:', this.id);
+    console.log('Eliminado usuario:', this.email);
   }
 }

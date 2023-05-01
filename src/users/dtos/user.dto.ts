@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Exclude } from 'class-transformer';
-import { IsOptional } from 'class-validator';
 
 export class UserDto {
   @Expose()
@@ -13,9 +12,15 @@ export class UserDto {
 
   @Expose()
   @ApiProperty()
-  @IsOptional()
   fullname: string;
+
+  @Expose()
+  @ApiProperty()
+  createdAt: Date;
 
   @Exclude()
   isAdmin: boolean;
+
+  @Exclude()
+  password: string;
 }
