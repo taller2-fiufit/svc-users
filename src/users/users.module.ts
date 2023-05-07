@@ -8,9 +8,11 @@ import { AuthService } from './auth.service';
 import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthController } from './auth.controller';
+import { ProducerModule } from 'src/producer/producer.module';
 
 @Module({
   imports: [
+    ProducerModule,
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       useFactory: () => {
@@ -39,7 +41,6 @@ export class UsersModule {
   ) {}
 
   async onModuleInit() {
-    console.log(process.env.DB_USER);
     const defaultAdmin = await this.userService.find(
       process.env.DEFAULT_ADMIN_EMAIL,
     );

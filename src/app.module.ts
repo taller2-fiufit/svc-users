@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmConfigService } from './config/typeorm.config';
+import { ProducerModule } from './producer/producer.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TypeOrmConfigService } from './config/typeorm.config';
       useClass: TypeOrmConfigService,
     }),
     UsersModule,
+    ProducerModule,
   ],
   controllers: [AppController],
   providers: [
