@@ -5,20 +5,20 @@ import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 
 config({
-    path: `.env.${process.env.NODE_ENV}`,
-  });
-  
-  const configService = new ConfigService();
-  const queueName = configService.get<string>('QUEUE_NAME');
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+const configService = new ConfigService();
+const queueName = configService.get<string>('QUEUE_NAME');
 
 @Injectable()
 export class ProducerService {
-    constructor(private sqsService: SqsService) {}
+  constructor(private sqsService: SqsService) {}
 
-    async dispatchMetric(metricDto: CreateMetricDto) {
-        await this.sqsService.send(queueName, {
-            id: 'id',
-            body: metricDto,
-        });
-    }
+  async dispatchMetric(metricDto: CreateMetricDto) {
+    await this.sqsService.send(queueName, {
+      id: 'id',
+      body: metricDto,
+    });
+  }
 }
