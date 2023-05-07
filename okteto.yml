@@ -7,6 +7,9 @@ build:
 deploy:
   - okteto build -t okteto.dev/svc-users
   - kubectl delete secret "secrets" || true
-  - kubectl create secret generic "secrets" --from-literal="JWT_SECRET"="${JWT_SECRET}"
+  - kubectl create secret generic "secrets"
+    --from-literal="JWT_SECRET"="${JWT_SECRET}"
+    --from-literal="AWS_ACCESS_KEY_ID"="${AWS_ACCESS_KEY_ID}"
+    --from-literal="AWS_SECRET_ACCESS_KEY"="${AWS_SECRET_ACCESS_KEY}"
   - kubectl apply -f k8s
   - kubectl rollout restart deployment users-backend-deployment
