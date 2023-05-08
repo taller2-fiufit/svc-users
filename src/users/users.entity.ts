@@ -25,6 +25,18 @@ export class User {
   @Column()
   isAdmin: boolean;
 
+  @Column({ nullable: true })
+  city: string;
+
+  @Column({ nullable: true })
+  country: string;
+
+  @Column({ nullable: true, type: 'decimal', precision: 10, scale: 5 })
+  latitude: number;
+
+  @Column({ nullable: true, type: 'decimal', precision: 10, scale: 5 })
+  longitude: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

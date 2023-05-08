@@ -13,7 +13,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(email: string, password: string, fullname: string) {
+  async signup(
+    email: string,
+    password: string,
+    fullname: string,
+    city: string,
+    country: string,
+    latitude: number,
+    longitude: number,
+  ) {
     const users = await this.userService.find(email);
     if (users.length) {
       throw new BadRequestException('Email en uso');
@@ -21,7 +29,16 @@ export class AuthService {
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const result = salt + '.' + hash.toString('hex');
-    return this.userService.create(email, result, fullname);
+    return this.userService.create(
+      email,
+      result,
+      fullname,
+      false,
+      city,
+      country,
+      latitude,
+      longitude,
+    );
   }
 
   //TODO: codigo duplicado
@@ -33,7 +50,16 @@ export class AuthService {
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const result = salt + '.' + hash.toString('hex');
-    return this.userService.create(email, result, fullname, true);
+    return this.userService.create(
+      email,
+      result,
+      fullname,
+      true,
+      null,
+      null,
+      null,
+      null,
+    );
   }
 
   async signin(email: string, password: string) {

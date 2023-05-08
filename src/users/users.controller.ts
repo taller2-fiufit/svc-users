@@ -30,7 +30,15 @@ export class UsersController {
 
   @Post('users')
   async signup(@Body() body: CreateUserDto) {
-    return this.authService.signup(body.email, body.password, body.fullname);
+    return this.authService.signup(
+      body.email,
+      body.password,
+      body.fullname,
+      body.city,
+      body.country,
+      body.latitude,
+      body.longitude,
+    );
   }
 
   //TODO: Investigar pipes

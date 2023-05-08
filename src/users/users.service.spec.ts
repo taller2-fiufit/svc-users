@@ -21,11 +21,16 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
-  it('puedo crear un usuario y por defecto no es admin', async () => {
+  it('puedo crear un usuario no admin', async () => {
     const user = await service.create(
       'jondoe@kinetix.com',
       'Temporal1234',
       'Normal User',
+      false,
+      'BuenosAires',
+      'Argentina',
+      0,
+      0,
     );
     expect(user).toBeDefined();
     expect(user.isAdmin).toBe(false);
@@ -40,15 +45,47 @@ describe('UsersService', () => {
       'jondoe@kinetix.com',
       'Temporal1234',
       'Normal User',
+      false,
+      'BuenosAires',
+      'Argentina',
+      0,
+      0,
     );
     const lookedUpUser = await service.findOne(1);
     expect(user.email).toEqual(lookedUpUser.email);
   });
 
   it('debe devolver todos los usuarios no administradores', async () => {
-    await service.create('jondoe1@kinetix.com', 'Temporal1234', 'Normal User1');
-    await service.create('jondoe2@kinetix.com', 'Temporal1234', 'Normal User2');
-    await service.create('admin@kinetix.com', 'admin', 'Admin Kinetix', true);
+    await service.create(
+      'jondoe1@kinetix.com',
+      'Temporal1234',
+      'Normal User1',
+      false,
+      'Buenos Aires',
+      'Argentina',
+      0,
+      0,
+    );
+    await service.create(
+      'jondoe2@kinetix.com',
+      'Temporal1234',
+      'Normal User2',
+      false,
+      'Buenos Aires',
+      'Argentina',
+      0,
+      0,
+    );
+    await service.create(
+      'admin@kinetix.com',
+      'admin',
+      'Admin Kinetix',
+      true,
+      null,
+      null,
+      null,
+      null,
+    );
     expect((await service.findAll()).length).toBe(2);
   });
 
@@ -57,6 +94,11 @@ describe('UsersService', () => {
       'jondoe1@kinetix.com',
       'Temporal1234',
       'Normal User1',
+      false,
+      'BuenosAires',
+      'Argentina',
+      0,
+      0,
     );
     expect(user.email).toBe('jondoe1@kinetix.com');
     user = await service.update(1, { email: 'temporal@kinetix.com' });
@@ -64,7 +106,16 @@ describe('UsersService', () => {
   });
 
   it('debe eliminar al usuario', async () => {
-    await service.create('jondoe1@kinetix.com', 'Temporal1234', 'Normal User1');
+    await service.create(
+      'jondoe1@kinetix.com',
+      'Temporal1234',
+      'Normal User1',
+      false,
+      'Buenos Aires',
+      'Argentina',
+      0,
+      0,
+    );
     const user = await service.findOne(1);
     expect(user.id).toBe(1);
     await service.remove(1);
