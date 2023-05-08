@@ -6,6 +6,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToMany,
+  JoinTable
 } from 'typeorm';
 
 @Entity()
@@ -39,6 +41,13 @@ export class User {
 
   @Column({ nullable: true, type: 'decimal', precision: 10, scale: 5 })
   longitude: number;
+
+  @ManyToMany(type => User, { onDelete: 'CASCADE' })
+  @JoinTable()
+  followers: User[];
+
+  @ManyToMany(type => User, followee => followee.followers, { onDelete: 'CASCADE' })
+  followees: User[];
 
   @CreateDateColumn()
   createdAt: Date;
