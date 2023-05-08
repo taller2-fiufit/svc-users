@@ -34,6 +34,7 @@ export class UsersController {
       body.email,
       body.password,
       body.fullname,
+      body.description,
       body.city,
       body.country,
       body.latitude,

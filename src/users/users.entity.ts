@@ -26,6 +26,9 @@ export class User {
   isAdmin: boolean;
 
   @Column({ nullable: true })
+  description: string;
+
+  @Column({ nullable: true })
   city: string;
 
   @Column({ nullable: true })

@@ -20,6 +20,11 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   @ApiProperty()
+  description: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
   city: string;
 
   @IsString()

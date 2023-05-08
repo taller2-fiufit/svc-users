@@ -16,6 +16,10 @@ export class CreateUserDto {
 
   @IsString()
   @ApiProperty()
+  description: string;
+
+  @IsString()
+  @ApiProperty()
   city: string;
 
   @IsString()

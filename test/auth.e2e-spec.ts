@@ -25,6 +25,7 @@ describe('Sistema de Autenticación', () => {
     const EMAIL = 'prueba@kinetix.com';
     const FULLNAME = 'Prueba Kinetix';
     const PASSWORD = 'Temporal1234';
+    const DESCRIPTION = 'Soy user prueba';
     const CITY = 'Buenos Aires';
     const COUNTRY = 'Argentina';
     const LATITUDE = 37.5;
@@ -36,6 +37,7 @@ describe('Sistema de Autenticación', () => {
         email: EMAIL,
         password: PASSWORD,
         fullname: FULLNAME,
+        description: DESCRIPTION,
         city: CITY,
         country: COUNTRY,
         latitude: LATITUDE,
@@ -54,6 +56,7 @@ describe('Sistema de Autenticación', () => {
     const EMAIL = 'prueba@kinetix.com';
     const FULLNAME = 'Prueba Kinetix';
     const PASSWORD = 'Temporal1234';
+    const DESCRIPTION = 'Soy user prueba';
     const CITY = 'Buenos Aires';
     const COUNTRY = 'Argentina';
     const LATITUDE = 37.5;
@@ -65,6 +68,7 @@ describe('Sistema de Autenticación', () => {
         email: EMAIL,
         password: PASSWORD,
         fullname: FULLNAME,
+        description: DESCRIPTION,
         city: CITY,
         country: COUNTRY,
         latitude: LATITUDE,
