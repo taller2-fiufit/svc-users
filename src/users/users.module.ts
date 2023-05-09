@@ -9,8 +9,7 @@ import { CurrentUserInterceptor } from './interceptors/current-user.interceptor'
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthController } from './auth.controller';
 import { ProducerModule } from '../producer/producer.module';
-import { FollowersService } from './followers/followers.service';
-import { FollowersController } from './followers/followers.controller';
+import { FollowersController } from './followers.controller';
 
 @Module({
   imports: [
@@ -34,7 +33,6 @@ import { FollowersController } from './followers/followers.controller';
       provide: APP_INTERCEPTOR,
       useClass: CurrentUserInterceptor,
     },
-    FollowersService,
   ],
 })
 export class UsersModule {
