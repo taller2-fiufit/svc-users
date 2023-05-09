@@ -16,6 +16,10 @@ export class UserDto {
 
   @Expose()
   @ApiProperty()
+  description: string;
+
+  @Expose()
+  @ApiProperty()
   createdAt: Date;
 
   @Exclude()
