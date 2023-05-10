@@ -16,6 +16,10 @@ export class UserDto {
 
   @Expose()
   @ApiProperty()
+  description: string;
+
+  @Expose()
+  @ApiProperty()
   createdAt: Date;
 
   @Exclude()
@@ -23,4 +27,20 @@ export class UserDto {
 
   @Exclude()
   password: string;
+
+  @Expose()
+  @ApiProperty()
+  city: string;
+
+  @Expose()
+  @ApiProperty()
+  country: string;
+
+  @Expose()
+  @ApiProperty()
+  latitude: number;
+
+  @Expose()
+  @ApiProperty()
+  longitude: number;
 }

@@ -10,6 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { CreateAdminDto } from './dtos/create-admin.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
@@ -30,13 +31,21 @@ export class UsersController {
 
   @Post('users')
   async signup(@Body() body: CreateUserDto) {
-    return this.authService.signup(body.email, body.password, body.fullname);
+    return this.authService.signup(
+      body.email,
+      body.password,
+      body.fullname,
+      body.description,
+      body.city,
+      body.country,
+      body.latitude,
+      body.longitude,
+    );
   }
 
-  //TODO: Investigar pipes
   @Post('admin')
   @UseGuards(AuthGuard)
-  createAdminUser(@CurrentUser() user: User, @Body() body: CreateUserDto) {
+  createAdminUser(@CurrentUser() user: User, @Body() body: CreateAdminDto) {
     if (!user.isAdmin) {
       throw new UnauthorizedException();
     }

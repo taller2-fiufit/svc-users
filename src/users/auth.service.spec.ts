@@ -65,6 +65,11 @@ describe('AuthService', () => {
       'prueba@kinetix.com',
       'Tempora1234',
       'Prueba Kinetix',
+      'soy user prueba',
+      'Buenos Aires',
+      'Argentina',
+      0,
+      0,
     );
     expect(user.password).not.toEqual('Tempora1234');
     const [salt, hash] = user.password.split('.');
@@ -73,9 +78,27 @@ describe('AuthService', () => {
   });
 
   it('tira un error si quiero registrar un usuario con un mail existente', async () => {
-    await service.signup('prueba@kinetix.com', 'Otra cosa', 'Prueba Kinetix');
+    await service.signup(
+      'prueba@kinetix.com',
+      'Otra cosa',
+      'Prueba Kinetix',
+      'BA',
+      'Argentina',
+      'soy user prueba',
+      0,
+      0,
+    );
     await expect(
-      service.signup('prueba@kinetix.com', 'Temporal1234', 'Juan Perez'),
+      service.signup(
+        'prueba@kinetix.com',
+        'Temporal1234',
+        'Juan Perez',
+        'BA',
+        'Argentina',
+        'soy user prueba',
+        0,
+        0,
+      ),
     ).rejects.toThrow(BadRequestException);
   });
 
@@ -90,6 +113,11 @@ describe('AuthService', () => {
       'prueba@kinetix.com',
       'Temporal1234',
       'Prueba Kinetix',
+      'BA',
+      'Argentina',
+      'soy user prueba',
+      0,
+      0,
     );
     const userToken = await service.signin(
       'prueba@kinetix.com',
@@ -106,6 +134,11 @@ describe('AuthService', () => {
       'prueba@kinetix.com',
       'Temporal1234',
       'Prueba Kinetix',
+      'soy user prueba',
+      'BA',
+      'Arg',
+      0,
+      0,
     );
     expect(user.isAdmin).toBe(false);
   });

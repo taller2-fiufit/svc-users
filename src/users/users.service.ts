@@ -7,8 +7,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  create(email: string, password: string, fullname: string, isAdmin = false) {
-    const user = this.repo.create({ email, password, fullname, isAdmin });
+  create(
+    email: string,
+    password: string,
+    fullname: string,
+    isAdmin = false,
+    description: string,
+    city: string,
+    country: string,
+    latitude: number,
+    longitude: number,
+  ) {
+    const user = this.repo.create({
+      email,
+      password,
+      fullname,
+      description,
+      isAdmin,
+      city,
+      country,
+      latitude,
+      longitude,
+    });
     return this.repo.save(user);
   }
 
@@ -37,5 +57,58 @@ export class UsersService {
   async remove(id: number) {
     const user = await this.findOne(id);
     return this.repo.remove([user]);
+  }
+
+  async followUser(followerId: number, followeeId: number) {
+    const follower = await this.repo.findOne({
+      where: { id: followerId },
+      relations: ['followees'],
+    });
+    const followee = await this.findOne(followeeId);
+
+    follower.followees.push(followee);
+    await this.repo.save(follower);
+    return;
+  }
+
+  async unfollowUser(followerId: number, followeeId: number) {
+    const follower = await this.repo.findOne({
+      where: { id: followerId },
+      relations: ['followees'],
+    });
+
+    const followee = await this.findOne(followeeId);
+    if (!followee) {
+      throw new NotFoundException();
+    }
+
+    follower.followees = follower.followees.filter((u) => u.id != followeeId);
+    await this.repo.save(follower);
+  }
+
+  async getFollowers(id: number) {
+    const user = await this.repo.findOne({
+      where: { id: id },
+      relations: ['followers'],
+    });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user.followers;
+  }
+
+  async getFollowees(id: number) {
+    const user = await this.repo.findOne({
+      where: { id: id },
+      relations: ['followees'],
+    });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user.followees;
   }
 }

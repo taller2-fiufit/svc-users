@@ -12,5 +12,5 @@ export class CreateMetricDto {
 
   @IsDate()
   @ApiProperty()
-  timeStamp: Date;
+  timestamp: Date;
 }

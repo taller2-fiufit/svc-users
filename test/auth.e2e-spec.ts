@@ -25,10 +25,24 @@ describe('Sistema de Autenticación', () => {
     const EMAIL = 'prueba@kinetix.com';
     const FULLNAME = 'Prueba Kinetix';
     const PASSWORD = 'Temporal1234';
+    const DESCRIPTION = '';
+    const CITY = 'Buenos Aires';
+    const COUNTRY = 'Argentina';
+    const LATITUDE = 37.5;
+    const LONGITUDE = -37.5;
 
     return request(app.getHttpServer())
       .post('/users')
-      .send({ email: EMAIL, password: PASSWORD, fullname: FULLNAME })
+      .send({
+        email: EMAIL,
+        password: PASSWORD,
+        fullname: FULLNAME,
+        description: DESCRIPTION,
+        city: CITY,
+        country: COUNTRY,
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+      })
       .expect(201)
       .then((res) => {
         const { id, email, fullname } = res.body;
@@ -42,10 +56,24 @@ describe('Sistema de Autenticación', () => {
     const EMAIL = 'prueba@kinetix.com';
     const FULLNAME = 'Prueba Kinetix';
     const PASSWORD = 'Temporal1234';
+    const DESCRIPTION = '';
+    const CITY = 'Buenos Aires';
+    const COUNTRY = 'Argentina';
+    const LATITUDE = 37.5;
+    const LONGITUDE = -37.5;
 
     await request(app.getHttpServer())
       .post('/users')
-      .send({ email: EMAIL, password: PASSWORD, fullname: FULLNAME })
+      .send({
+        email: EMAIL,
+        password: PASSWORD,
+        fullname: FULLNAME,
+        description: DESCRIPTION,
+        city: CITY,
+        country: COUNTRY,
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+      })
       .expect(201);
 
     let response = await request(app.getHttpServer())
