@@ -14,8 +14,8 @@ describe('UsersService', () => {
   beforeEach(async () => {
     mockProducerService = {
       dispatchMetric: (metricDto: CreateMetricDto) => {
-        return null;
-      }
+        return Promise.resolve(metricDto as null);
+      },
     };
     const module: TestingModule = await Test.createTestingModule({
       imports: [TypeORMTestingModule([User]), TypeOrmModule.forFeature([User])],
@@ -23,8 +23,8 @@ describe('UsersService', () => {
         UsersService,
         {
           useValue: mockProducerService,
-          provide: ProducerService
-        }
+          provide: ProducerService,
+        },
       ],
     }).compile();
 
