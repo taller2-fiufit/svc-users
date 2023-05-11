@@ -29,10 +29,13 @@ spec:
                   key: JWT_SECRET
           ports:
             - containerPort: 3000
-          #readinessProbe:
-           # httpGet:
-            #  path: /health
-             # port: 3000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
 
 ---
 apiVersion: v1
