@@ -21,7 +21,7 @@ import { FollowersController } from './followers.controller';
         return {
           global: true,
           secret: process.env.JWT_SECRET,
-          signOptions: { expiresIn: '6000s' },
+          signOptions: { expiresIn: '60000s' },
         };
       },
     }),

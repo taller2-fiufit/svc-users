@@ -41,4 +41,9 @@ export class UpdateUserDto {
   @IsOptional()
   @ApiProperty()
   longitude: number;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  profileimage: string;
 }

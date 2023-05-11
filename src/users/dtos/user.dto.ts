@@ -43,4 +43,8 @@ export class UserDto {
   @Expose()
   @ApiProperty()
   longitude: number;
+
+  @Expose()
+  @ApiProperty()
+  profileimage: string;
 }

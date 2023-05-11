@@ -20,7 +20,6 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
 import { AuthGuard } from '../guards/auth.guard';
 
-//TODO: Pensar bien el admin
 @Controller('')
 @Serialize(UserDto)
 export class UsersController {
@@ -40,6 +39,7 @@ export class UsersController {
       body.country,
       body.latitude,
       body.longitude,
+      body.profileimage
     );
   }
 

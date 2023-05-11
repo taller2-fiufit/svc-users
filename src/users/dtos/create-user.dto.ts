@@ -33,4 +33,8 @@ export class CreateUserDto {
   @IsNumber()
   @ApiProperty()
   longitude: number;
+
+  @IsString()
+  @ApiProperty()
+  profileimage: string;
 }
