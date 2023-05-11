@@ -57,11 +57,11 @@ export class AuthService {
       result,
       fullname,
       true,
-      null,
-      null,
-      null,
-      null,
-      null,
+      '',
+      '',
+      '',
+      0,
+      0,
     );
   }
 
