@@ -1,13 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
+import { UserDto } from './dtos/user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ProducerService } from '../producer/producer.service';
+import { CreateMetricDto } from './dtos/create-metric.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private repo: Repository<User>,
+    private producerService: ProducerService,
+  ) {}
 
-  create(
+  async create(
     email: string,
     password: string,
     fullname: string,
@@ -29,7 +35,11 @@ export class UsersService {
       latitude,
       longitude,
     });
-    return this.repo.save(user);
+    await this.repo.save(user);
+    this.producerService.dispatchMetric(
+      this.createUserEvent('signinsWithMail', this.userToDto(user)),
+    );
+    return user;
   }
 
   async findOne(id: number) {
@@ -110,5 +120,29 @@ export class UsersService {
     }
 
     return user.followees;
+  }
+
+  createUserEvent(command: string, userDto: UserDto): CreateMetricDto {
+    const metric = new CreateMetricDto();
+    metric.service = 'users';
+    metric.command = command;
+    metric.timestamp = new Date(Date.now());
+    metric.attrs = JSON.stringify(userDto);
+    return metric;
+  }
+
+  userToDto(user: User): UserDto {
+    const userDto = new UserDto();
+    userDto.city = user.city;
+    userDto.country = user.country;
+    userDto.createdAt = user.createdAt;
+    userDto.description = user.description;
+    userDto.email = user.email;
+    userDto.fullname = user.fullname;
+    userDto.id = user.id;
+    userDto.isAdmin = user.isAdmin;
+    userDto.latitude = user.latitude;
+    userDto.longitude = user.longitude;
+    return userDto;
   }
 }
