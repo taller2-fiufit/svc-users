@@ -13,4 +13,8 @@ export class CreateMetricDto {
   @IsDate()
   @ApiProperty()
   timestamp: Date;
+
+  @IsString()
+  @ApiProperty()
+  attrs: string;
 }

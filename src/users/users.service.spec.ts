@@ -4,14 +4,28 @@ import { User } from './users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
+import { ProducerService } from '../producer/producer.service';
+import { CreateMetricDto } from './dtos/create-metric.dto';
 
 describe('UsersService', () => {
   let service: UsersService;
+  let mockProducerService: Partial<ProducerService>;
 
   beforeEach(async () => {
+    mockProducerService = {
+      dispatchMetric: (metricDto: CreateMetricDto) => {
+        return null;
+      }
+    };
     const module: TestingModule = await Test.createTestingModule({
       imports: [TypeORMTestingModule([User]), TypeOrmModule.forFeature([User])],
-      providers: [UsersService],
+      providers: [
+        UsersService,
+        {
+          useValue: mockProducerService,
+          provide: ProducerService
+        }
+      ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);

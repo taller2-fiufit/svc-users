@@ -81,7 +81,7 @@ export class AuthService {
       }
 
       const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
-
+      
       return { access_token: await this.jwtService.signAsync(payload) };
     } catch {
       throw new BadRequestException('Email y password no corresponden');
