@@ -23,6 +23,7 @@ export class UsersService {
     country: string,
     latitude: number,
     longitude: number,
+    profileimage: string,
   ) {
     const user = this.repo.create({
       email,
@@ -34,6 +35,7 @@ export class UsersService {
       country,
       latitude,
       longitude,
+      profileimage
     });
     await this.repo.save(user);
     this.producerService.dispatchMetric(
@@ -143,6 +145,7 @@ export class UsersService {
     userDto.isAdmin = user.isAdmin;
     userDto.latitude = user.latitude;
     userDto.longitude = user.longitude;
+    userDto.profileimage = user.profileimage;
     return userDto;
   }
 }
