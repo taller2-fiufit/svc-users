@@ -26,7 +26,7 @@ jobs:
     integration:
         runs-on: ubuntu-latest
         environment: test
-        container: node:alpine
+        container: node:latest
         services:
           postgres:
             image: postgres
@@ -48,13 +48,14 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                 node-version: 'latest'
+                cache: 'npm'
             - name: Install dependencies
               run: npm install
             - name: Run Lint
               run: npm run lint
             - name: Run Unit Tests
               run: npm test
-            - name: Run Funcional Tests
+            - name: Run Functional Tests
               run: npm run test:e2e
             - name: Generate Coverage
               run: npm run test:cov
