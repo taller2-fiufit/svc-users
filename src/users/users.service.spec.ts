@@ -108,7 +108,7 @@ describe('UsersService', () => {
     expect((await service.findAll()).length).toBe(2);
   });
 
-  it('debe acutalizar al usuario', async () => {
+  it('debe actualizar al usuario', async () => {
     let user = await service.create(
       'jondoe1@kinetix.com',
       'Temporal1234',

@@ -9,7 +9,7 @@
     "<rootDir>/src",
     "<rootDir>/test"
   ],
-  "testRegex": "test/.*.e2e-spec.ts$",
+  "testRegex": "src/.*\\.spec\\.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
@@ -19,5 +19,5 @@
     "!<rootDir>/src/**/*.spec.(t|j)s",
     "!<rootDir>/src/migrations/*"
   ],
-  "coverageDirectory": "<rootDir>/e2e_coverage"
+  "coverageDirectory": "<rootDir>/unit_coverage"
 }
