@@ -35,6 +35,6 @@ export class ProducerModule {
       accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
       secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
     });
-    console.log("ACCESS KEY ID", myConfig.accessKeyId);
+    console.log("ACCESS KEY ID", this.configService.get('AWS_ACCESS_KEY_ID'));
   }
 }
