@@ -16,7 +16,6 @@ export class ProducerService {
   constructor(private sqsService: SqsService) {}
 
   async dispatchMetric(metricDto: CreateMetricDto) {
-    console.log("HASTA ACA LLEGO", metricDto)
     await this.sqsService.send(queueName, {
       id: 'id',
       body: metricDto,
