@@ -30,7 +30,6 @@ describe('Sistema de Autenticación', () => {
     const COUNTRY = 'Argentina';
     const LATITUDE = 37.5;
     const LONGITUDE = -37.5;
-    const IMAGE = '';
 
     return request(app.getHttpServer())
       .post('/users')
@@ -42,8 +41,7 @@ describe('Sistema de Autenticación', () => {
         city: CITY,
         country: COUNTRY,
         latitude: LATITUDE,
-        longitude: LONGITUDE,
-        profileimage: IMAGE,
+        longitude: LONGITUDE
       })
       .expect(201)
       .then((res) => {
@@ -63,7 +61,6 @@ describe('Sistema de Autenticación', () => {
     const COUNTRY = 'Argentina';
     const LATITUDE = 37.5;
     const LONGITUDE = -37.5;
-    const IMAGE = '';
 
     await request(app.getHttpServer())
       .post('/users')
@@ -75,8 +72,7 @@ describe('Sistema de Autenticación', () => {
         city: CITY,
         country: COUNTRY,
         latitude: LATITUDE,
-        longitude: LONGITUDE,
-        profileimage: IMAGE
+        longitude: LONGITUDE
       })
       .expect(201);
 

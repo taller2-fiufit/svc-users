@@ -38,8 +38,7 @@ export class UsersController {
       body.city,
       body.country,
       body.latitude,
-      body.longitude,
-      body.profileimage
+      body.longitude
     );
   }
 

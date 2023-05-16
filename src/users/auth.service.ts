@@ -22,7 +22,6 @@ export class AuthService {
     country: string,
     latitude: number,
     longitude: number,
-    profileimage: string
   ) {
     const users = await this.userService.find(email);
     if (users.length) {
@@ -41,7 +40,6 @@ export class AuthService {
       country,
       latitude,
       longitude,
-      profileimage
     );
   }
 
@@ -64,7 +62,6 @@ export class AuthService {
       '',
       0,
       0,
-      ''
     );
   }
 
