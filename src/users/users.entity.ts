@@ -52,6 +52,9 @@ export class User {
   @Column({default: 'profile.jpg'})
   profileimage: string;
 
+  @Column({default: false})
+  blocked: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
