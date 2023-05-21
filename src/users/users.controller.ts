@@ -72,12 +72,21 @@ export class UsersController {
   }
 
   @Delete('users/:id')
-  deleteUser(@Param('id') id: string) {
+  @UseGuards(AuthGuard)
+  deleteUser(@Param('id') id: string, @CurrentUser() user: User) {
+    console.log(user);
+    if (user.id.toString() != id && !user.isAdmin) {
+      throw new UnauthorizedException();
+    }
     return this.usersService.remove(parseInt(id));
   }
 
   @Patch('users/:id')
-  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
+  @UseGuards(AuthGuard)
+  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto, @CurrentUser() user: User) {
+    if (user.id.toString() != id && !user.isAdmin) {
+      throw new UnauthorizedException();
+    }
     return this.usersService.update(parseInt(id), body);
   }
 }
