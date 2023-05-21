@@ -13,6 +13,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { CreateAdminDto } from './dtos/create-admin.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { ChangeStatusUserDto } from './dtos/change-status-user';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
@@ -38,7 +39,7 @@ export class UsersController {
       body.city,
       body.country,
       body.latitude,
-      body.longitude
+      body.longitude,
     );
   }
 
@@ -75,7 +76,7 @@ export class UsersController {
   @UseGuards(AuthGuard)
   deleteUser(@Param('id') id: string, @CurrentUser() user: User) {
     console.log(user);
-    if (user.id.toString() != id && !user.isAdmin) {
+    if (user.id != parseInt(id) && !user.isAdmin) {
       throw new UnauthorizedException();
     }
     return this.usersService.remove(parseInt(id));
@@ -83,8 +84,25 @@ export class UsersController {
 
   @Patch('users/:id')
   @UseGuards(AuthGuard)
-  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto, @CurrentUser() user: User) {
-    if (user.id.toString() != id && !user.isAdmin) {
+  updateUser(
+    @Param('id') id: string,
+    @Body() body: UpdateUserDto,
+    @CurrentUser() user: User,
+  ) {
+    if (user.id != parseInt(id) && !user.isAdmin) {
+      throw new UnauthorizedException();
+    }
+    return this.usersService.update(parseInt(id), body);
+  }
+
+  @Patch('users/:id/status')
+  @UseGuards(AuthGuard)
+  updateUserStatus(
+    @Param('id') id: string,
+    @Body() body: ChangeStatusUserDto,
+    @CurrentUser() user: User,
+  ) {
+    if (!user.isAdmin) {
       throw new UnauthorizedException();
     }
     return this.usersService.update(parseInt(id), body);

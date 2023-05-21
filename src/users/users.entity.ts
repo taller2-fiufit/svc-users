@@ -49,10 +49,10 @@ export class User {
   @ManyToMany(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
   followees: User[];
 
-  @Column({default: 'profile.jpg'})
+  @Column({ default: 'profile.jpg' })
   profileimage: string;
 
-  @Column({default: false})
+  @Column({ default: false })
   blocked: boolean;
 
   @CreateDateColumn()

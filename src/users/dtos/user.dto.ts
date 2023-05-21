@@ -47,4 +47,8 @@ export class UserDto {
   @Expose()
   @ApiProperty()
   profileimage: string;
+
+  @Expose()
+  @ApiProperty()
+  blocked: boolean;
 }

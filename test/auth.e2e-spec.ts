@@ -41,7 +41,7 @@ describe('Sistema de Autenticación', () => {
         city: CITY,
         country: COUNTRY,
         latitude: LATITUDE,
-        longitude: LONGITUDE
+        longitude: LONGITUDE,
       })
       .expect(201)
       .then((res) => {
@@ -72,7 +72,7 @@ describe('Sistema de Autenticación', () => {
         city: CITY,
         country: COUNTRY,
         latitude: LATITUDE,
-        longitude: LONGITUDE
+        longitude: LONGITUDE,
       })
       .expect(201);
 
