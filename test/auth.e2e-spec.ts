@@ -76,7 +76,7 @@ describe('Sistema de Autenticación', () => {
         country: COUNTRY,
         latitude: LATITUDE,
         longitude: LONGITUDE,
-        profileimage: IMAGE
+        profileimage: IMAGE,
       })
       .expect(201);
 

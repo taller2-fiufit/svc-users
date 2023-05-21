@@ -35,7 +35,7 @@ export class UsersService {
       country,
       latitude,
       longitude,
-      profileimage
+      profileimage,
     });
     await this.repo.save(user);
     this.producerService.dispatchMetric(
