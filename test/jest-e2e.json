@@ -17,7 +17,8 @@
   "collectCoverageFrom": [
     "<rootDir>/src/**/*.(t|j)s",
     "!<rootDir>/src/**/*.spec.(t|j)s",
-    "!<rootDir>/src/migrations/*"
+    "!<rootDir>/src/migrations/*",
+    "!<rootDir>/src/main.ts"
   ],
   "coverageDirectory": "<rootDir>/e2e_coverage"
 }

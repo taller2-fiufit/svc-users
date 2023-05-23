@@ -70,7 +70,7 @@ describe('AuthService', () => {
       'Argentina',
       0,
       0,
-      ''
+      '',
     );
     expect(user.password).not.toEqual('Tempora1234');
     const [salt, hash] = user.password.split('.');
@@ -88,7 +88,7 @@ describe('AuthService', () => {
       'soy user prueba',
       0,
       0,
-      ''
+      '',
     );
     await expect(
       service.signup(
@@ -100,7 +100,7 @@ describe('AuthService', () => {
         'soy user prueba',
         0,
         0,
-        ''
+        '',
       ),
     ).rejects.toThrow(BadRequestException);
   });
@@ -121,7 +121,7 @@ describe('AuthService', () => {
       'soy user prueba',
       0,
       0,
-      ''
+      '',
     );
     const userToken = await service.signin(
       'prueba@kinetix.com',
@@ -143,7 +143,7 @@ describe('AuthService', () => {
       'Arg',
       0,
       0,
-      ''
+      '',
     );
     expect(user.isAdmin).toBe(false);
   });
