@@ -95,4 +95,17 @@ export class AuthService {
       throw error;
     }
   }
+  
+  async googleLogin(req) {
+    if (!req.user) {
+      throw new BadRequestException('Usuario Google Invalido');
+    }
+    console.log(req.user);
+    const user = this.userService.find(req.user.email)[0];
+    console.log(user);
+    if (!user) {
+      return "No existe el usuario"
+    }
+    return user;
+  }
 }

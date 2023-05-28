@@ -37,6 +37,11 @@ spec:
                 secretKeyRef:
                   name: secrets
                   key: AWS_SECRET_ACCESS_KEY
+            - name: GOOGLE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: GOOGLE_SECRET
           ports:
             - containerPort: 3000
           readinessProbe:
