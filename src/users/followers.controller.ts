@@ -13,8 +13,10 @@ import { AuthGuard } from '../guards/auth.guard';
 import { UsersService } from './users.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Serialize(UserDto)
+@ApiTags('Followers')
 @Controller()
 export class FollowersController {
   constructor(private usersService: UsersService) {}
