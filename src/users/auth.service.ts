@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  UnauthorizedException,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { scrypt as _scrypt, randomBytes } from 'crypto';
@@ -22,7 +26,6 @@ export class AuthService {
     country: string,
     latitude: number,
     longitude: number,
-    profileimage: string,
   ) {
     const users = await this.userService.find(email);
     if (users.length) {
@@ -41,7 +44,6 @@ export class AuthService {
       country,
       latitude,
       longitude,
-      profileimage,
     );
   }
 
@@ -64,7 +66,6 @@ export class AuthService {
       '',
       0,
       0,
-      '',
     );
   }
 
@@ -73,6 +74,10 @@ export class AuthService {
       const [user] = await this.userService.find(email);
       if (!user) {
         throw new BadRequestException('Email y password no corresponden');
+      }
+
+      if (user.blocked) {
+        throw new UnauthorizedException('El usuario se encuentra bloqueado');
       }
 
       const [salt, storedHash] = user.password.split('.');
@@ -86,8 +91,8 @@ export class AuthService {
       const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
 
       return { access_token: await this.jwtService.signAsync(payload) };
-    } catch {
-      throw new BadRequestException('Email y password no corresponden');
+    } catch (error) {
+      throw error;
     }
   }
 }

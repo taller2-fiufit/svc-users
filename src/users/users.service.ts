@@ -23,7 +23,7 @@ export class UsersService {
     country: string,
     latitude: number,
     longitude: number,
-    profileimage: string,
+    profileimage = 'profile.jpg',
   ) {
     const user = this.repo.create({
       email,
