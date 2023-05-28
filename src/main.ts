@@ -12,7 +12,9 @@ async function bootstrap() {
     .setTitle('Users')
     .setDescription('Documentación de API Users')
     .setVersion('1.0')
-    .addTag('users')
+    .addTag('Users')
+    .addTag('Followers')
+    .addTag('Auth')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   const options = { jsonDocumentUrl: 'openapi.json' };

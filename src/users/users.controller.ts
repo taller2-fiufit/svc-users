@@ -19,8 +19,10 @@ import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
 import { AuthGuard } from '../guards/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('')
+@ApiTags('Users')
 @Serialize(UserDto)
 export class UsersController {
   constructor(
