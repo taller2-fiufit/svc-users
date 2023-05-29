@@ -100,12 +100,24 @@ export class AuthService {
     if (!req.user) {
       throw new BadRequestException('Usuario Google Invalido');
     }
-    console.log(req.user);
-    const user = this.userService.find(req.user.email)[0];
-    console.log(user);
+    let [user] = await this.userService.find(req.user.email);
     if (!user) {
-      return "No existe el usuario"
+      const salt = randomBytes(8).toString('hex');
+      const hash = (await scrypt(req.user.accessToken, salt, 32)) as Buffer;
+      const result = salt + '.' + hash.toString('hex');
+      user = await this.userService.create(
+        req.user.email,
+        result,
+        req.user.firstName + ' ' + req.user.lastName,
+        false,
+        '',
+        '',
+        '',
+        null,
+        null,
+      )
     }
-    return user;
+    const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
+    return { access_token: await this.jwtService.signAsync(payload) };
   }
 }
