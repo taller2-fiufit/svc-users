@@ -43,17 +43,12 @@ describe('AuthService', () => {
         users.push(user);
         return Promise.resolve(user);
       },
-      createUserEvent: (
-        command: string,
-        userDto: UserDto,
-      ) => {
-        return new CreateMetricDto()
+      createUserEvent: (command: string, userDto: UserDto) => {
+        return new CreateMetricDto();
       },
-      userToDto: (
-        user: User
-      ) => {
-        return new UserDto()
-      }
+      userToDto: (user: User) => {
+        return new UserDto();
+      },
     };
     mockJwtService = {
       signAsync: (payload: string | object | Buffer) => {

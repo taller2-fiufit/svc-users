@@ -4,7 +4,6 @@ import { User } from './users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
-import { ProducerService } from '../producer/producer.service';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -12,9 +11,7 @@ describe('UsersService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [TypeORMTestingModule([User]), TypeOrmModule.forFeature([User])],
-      providers: [
-        UsersService,
-      ],
+      providers: [UsersService],
     }).compile();
 
     service = module.get<UsersService>(UsersService);

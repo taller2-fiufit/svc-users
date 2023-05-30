@@ -7,9 +7,7 @@ import { CreateMetricDto } from './dtos/create-metric.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User) private repo: Repository<User>,
-  ) {}
+  constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   async create(
     email: string,

@@ -49,10 +49,13 @@ export class AuthService {
     );
 
     this.producerService.dispatchMetric(
-      this.userService.createUserEvent('signinsWithMail',this.userService.userToDto(user))
-    )
+      this.userService.createUserEvent(
+        'signinsWithMail',
+        this.userService.userToDto(user),
+      ),
+    );
 
-    return user
+    return user;
   }
 
   //TODO: codigo duplicado
@@ -99,15 +102,18 @@ export class AuthService {
       const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
 
       this.producerService.dispatchMetric(
-        this.userService.createUserEvent('loginsWithMail',this.userService.userToDto(user))
-      )
-      
+        this.userService.createUserEvent(
+          'loginsWithMail',
+          this.userService.userToDto(user),
+        ),
+      );
+
       return { access_token: await this.jwtService.signAsync(payload) };
     } catch (error) {
       throw error;
     }
   }
-  
+
   async googleLogin(req) {
     if (!req.user) {
       throw new BadRequestException('Usuario Google Invalido');
@@ -127,14 +133,20 @@ export class AuthService {
         '',
         null,
         null,
-      )
+      );
       this.producerService.dispatchMetric(
-        this.userService.createUserEvent('signinsWithFederatedId',this.userService.userToDto(user))
-      )
+        this.userService.createUserEvent(
+          'signinsWithFederatedId',
+          this.userService.userToDto(user),
+        ),
+      );
     }
     this.producerService.dispatchMetric(
-      this.userService.createUserEvent('loginsWithFederatedId',this.userService.userToDto(user))
-    )
+      this.userService.createUserEvent(
+        'loginsWithFederatedId',
+        this.userService.userToDto(user),
+      ),
+    );
     const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
     return { access_token: await this.jwtService.signAsync(payload) };
   }
