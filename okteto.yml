@@ -11,5 +11,6 @@ deploy:
     --from-literal="JWT_SECRET"="${JWT_SECRET}"
     --from-literal="AWS_ACCESS_KEY_ID"="${AWS_ACCESS_KEY_ID}"
     --from-literal="AWS_SECRET_ACCESS_KEY"="${AWS_SECRET_ACCESS_KEY}"
+    --from-literal="GOOGLE_SECRET"="${"GOOGLE_SECRET"}"
   - kubectl apply -f k8s
   - kubectl rollout restart deployment users-backend-deployment
