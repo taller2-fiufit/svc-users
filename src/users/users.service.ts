@@ -3,14 +3,12 @@ import { Repository } from 'typeorm';
 import { User } from './users.entity';
 import { UserDto } from './dtos/user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProducerService } from '../producer/producer.service';
 import { CreateMetricDto } from './dtos/create-metric.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private repo: Repository<User>,
-    private producerService: ProducerService,
   ) {}
 
   async create(
@@ -37,11 +35,7 @@ export class UsersService {
       longitude,
       profileimage,
     });
-    await this.repo.save(user);
-    this.producerService.dispatchMetric(
-      this.createUserEvent('signinsWithMail', this.userToDto(user)),
-    );
-    return user;
+    return this.repo.save(user);
   }
 
   async findOne(id: number) {

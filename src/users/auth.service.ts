@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
+import { ProducerService } from '../producer/producer.service';
 import { scrypt as _scrypt, randomBytes } from 'crypto';
 import { promisify } from 'util';
 
@@ -15,6 +16,7 @@ export class AuthService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
+    private producerService: ProducerService,
   ) {}
 
   async signup(
@@ -34,7 +36,7 @@ export class AuthService {
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const result = salt + '.' + hash.toString('hex');
-    return this.userService.create(
+    const user = await this.userService.create(
       email,
       result,
       fullname,
@@ -45,6 +47,12 @@ export class AuthService {
       latitude,
       longitude,
     );
+
+    this.producerService.dispatchMetric(
+      this.userService.createUserEvent('signinsWithMail',this.userService.userToDto(user))
+    )
+
+    return user
   }
 
   //TODO: codigo duplicado
@@ -90,6 +98,10 @@ export class AuthService {
 
       const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
 
+      this.producerService.dispatchMetric(
+        this.userService.createUserEvent('loginsWithMail',this.userService.userToDto(user))
+      )
+      
       return { access_token: await this.jwtService.signAsync(payload) };
     } catch (error) {
       throw error;
@@ -116,7 +128,13 @@ export class AuthService {
         null,
         null,
       )
+      this.producerService.dispatchMetric(
+        this.userService.createUserEvent('signinsWithFederatedId',this.userService.userToDto(user))
+      )
     }
+    this.producerService.dispatchMetric(
+      this.userService.createUserEvent('loginsWithFederatedId',this.userService.userToDto(user))
+    )
     const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
     return { access_token: await this.jwtService.signAsync(payload) };
   }
