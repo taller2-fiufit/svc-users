@@ -30,7 +30,7 @@ export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
-  ) { }
+  ) {}
 
   @Post('users')
   async signup(@Body() body: CreateUserDto) {
@@ -71,7 +71,8 @@ export class UsersController {
   }
 
   @Get('users')
-  findAllUsers(
+  @UseGuards(AuthGuard)
+  async findAllUsers(
     @CurrentUser() user: User,
     @Query('latitude') latitude?: number,
     @Query('longitude') longitude?: number,
@@ -86,7 +87,12 @@ export class UsersController {
       latitude = user.latitude;
       longitude = user.longitude;
     }
-    return this.usersService.findByDistance(latitude, longitude, maxDistance);
+    const result = await this.usersService.findByDistance(
+      latitude,
+      longitude,
+      maxDistance,
+    );
+    return result.filter((u) => u.id !== user.id);
   }
 
   @Delete('users/:id')

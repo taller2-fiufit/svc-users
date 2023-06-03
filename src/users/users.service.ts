@@ -61,16 +61,19 @@ export class UsersService {
   }
 
   findByDistance(latitude: number, longitude: number, maxDistance: number) {
-    const KMS_PER_MILE = 1.60934;
+    const DISTANCE_FORMULA = `ASIN(SQRT(
+      POWER(SIN(RADIANS(user.latitude - ${latitude})/2), 2)
+      + POWER(SIN(RADIANS(user.longitude - ${longitude})/2), 2)
+      * COS(RADIANS(${latitude})) * COS(RADIANS(user.latitude))
+      )) * 12756.2`;
     return this.repo
       .createQueryBuilder('user')
       .select('user')
-      .addSelect(
-        `POINT(user.longitude, user.latitude) <@> POINT(${longitude}, ${latitude}) * ${KMS_PER_MILE}`, // distance is in miles
-        'distance',
-      )
+      .addSelect(DISTANCE_FORMULA, 'distance')
       .where('NOT user.isAdmin')
-      .andWhere('distance < :maxDistance', { maxDistance })
+      .andWhere(`${DISTANCE_FORMULA} < :maxDistance`, {
+        maxDistance,
+      })
       .orderBy('distance', 'ASC', 'NULLS LAST')
       .getMany();
   }
