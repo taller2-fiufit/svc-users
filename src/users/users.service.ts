@@ -60,6 +60,20 @@ export class UsersService {
     return this.repo.find({ where: { isAdmin: false } });
   }
 
+  findByDistance(latitude: number, longitude: number, maxDistance: number) {
+    const KMS_PER_MILE = 1.60934;
+    return this.repo
+      .createQueryBuilder('user')
+      .select('user')
+      .addSelect(
+        `POINT(user.longitude, user.latitude) <@> POINT(${longitude}, ${latitude}) * ${KMS_PER_MILE}`, // distance is in miles
+        'distance',
+      )
+      .where('distance < :maxDistance', { maxDistance })
+      .orderBy('distance', 'ASC', 'NULLS LAST')
+      .getMany();
+  }
+
   async update(id: number, attrs: Partial<User>) {
     const user = await this.findOne(id);
     Object.assign(user, attrs);
