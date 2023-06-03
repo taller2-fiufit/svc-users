@@ -8,6 +8,7 @@ import {
   Patch,
   UseGuards,
   UnauthorizedException,
+  Query,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { CreateAdminDto } from './dtos/create-admin.dto';
@@ -70,8 +71,22 @@ export class UsersController {
   }
 
   @Get('users')
-  findAllUsers() {
-    return this.usersService.findAll();
+  findAllUsers(
+    @CurrentUser() user: User,
+    @Query('latitude') latitude?: number,
+    @Query('longitude') longitude?: number,
+    @Query('maxDistance') maxDistance?: number,
+  ) {
+    // Return all users
+    if (maxDistance === undefined) {
+      return this.usersService.findAll();
+    }
+    // Return only users near received point, up to `maxDistance` Kms
+    if (latitude === undefined || longitude === undefined) {
+      latitude = user.latitude;
+      longitude = user.longitude;
+    }
+    return this.usersService.findByDistance(latitude, longitude, maxDistance);
   }
 
   @Delete('users/:id')
