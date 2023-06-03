@@ -11,7 +11,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private repo: Repository<User>,
     private producerService: ProducerService,
-  ) {}
+  ) { }
 
   async create(
     email: string,
@@ -69,7 +69,8 @@ export class UsersService {
         `POINT(user.longitude, user.latitude) <@> POINT(${longitude}, ${latitude}) * ${KMS_PER_MILE}`, // distance is in miles
         'distance',
       )
-      .where('distance < :maxDistance', { maxDistance })
+      .where('NOT user.isAdmin')
+      .andWhere('distance < :maxDistance', { maxDistance })
       .orderBy('distance', 'ASC', 'NULLS LAST')
       .getMany();
   }

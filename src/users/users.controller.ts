@@ -30,7 +30,7 @@ export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   @Post('users')
   async signup(@Body() body: CreateUserDto) {
