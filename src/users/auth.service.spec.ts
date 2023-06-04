@@ -4,15 +4,24 @@ import { UsersService } from './users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './users.entity';
 import { BadRequestException } from '@nestjs/common';
+import { ProducerService } from '../producer/producer.service';
+import { CreateMetricDto } from './dtos/create-metric.dto';
+import { UserDto } from './dtos/user.dto';
 
 describe('AuthService', () => {
   let service: AuthService;
   let mockUsersService: Partial<UsersService>;
   let mockJwtService: Partial<JwtService>;
+  let mockProducerService: Partial<ProducerService>;
   let users: User[];
 
   beforeEach(async () => {
     users = [];
+    mockProducerService = {
+      dispatchMetric: (metricDto: CreateMetricDto) => {
+        return Promise.resolve(metricDto as null);
+      },
+    };
     mockUsersService = {
       find: (email: string) => {
         const usuariosFiltrados = users.filter((user) => user.email === email);
@@ -34,6 +43,12 @@ describe('AuthService', () => {
         users.push(user);
         return Promise.resolve(user);
       },
+      createUserEvent: (command: string, userDto: UserDto) => {
+        return new CreateMetricDto();
+      },
+      userToDto: (user: User) => {
+        return new UserDto();
+      },
     };
     mockJwtService = {
       signAsync: (payload: string | object | Buffer) => {
@@ -50,6 +65,10 @@ describe('AuthService', () => {
         {
           provide: UsersService,
           useValue: mockUsersService,
+        },
+        {
+          useValue: mockProducerService,
+          provide: ProducerService,
         },
       ],
     }).compile();

@@ -3,15 +3,11 @@ import { Repository } from 'typeorm';
 import { User } from './users.entity';
 import { UserDto } from './dtos/user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProducerService } from '../producer/producer.service';
 import { CreateMetricDto } from './dtos/create-metric.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User) private repo: Repository<User>,
-    private producerService: ProducerService,
-  ) {}
+  constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   async create(
     email: string,
@@ -37,11 +33,7 @@ export class UsersService {
       longitude,
       profileimage,
     });
-    await this.repo.save(user);
-    this.producerService.dispatchMetric(
-      this.createUserEvent('signinsWithMail', this.userToDto(user)),
-    );
-    return user;
+    return this.repo.save(user);
   }
 
   async findOne(id: number) {
@@ -58,6 +50,24 @@ export class UsersService {
 
   findAll() {
     return this.repo.find({ where: { isAdmin: false } });
+  }
+
+  findByDistance(latitude: number, longitude: number, maxDistance: number) {
+    const DISTANCE_FORMULA = `ASIN(SQRT(
+      POWER(SIN(RADIANS(user.latitude - ${latitude})/2), 2)
+      + POWER(SIN(RADIANS(user.longitude - ${longitude})/2), 2)
+      * COS(RADIANS(${latitude})) * COS(RADIANS(user.latitude))
+      )) * 12756.2`;
+    return this.repo
+      .createQueryBuilder('user')
+      .select('user')
+      .addSelect(DISTANCE_FORMULA, 'distance')
+      .where('NOT user.isAdmin')
+      .andWhere(`${DISTANCE_FORMULA} < :maxDistance`, {
+        maxDistance,
+      })
+      .orderBy('distance', 'ASC', 'NULLS LAST')
+      .getMany();
   }
 
   async update(id: number, attrs: Partial<User>) {
