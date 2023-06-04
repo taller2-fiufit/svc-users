@@ -15,8 +15,6 @@ describe('AuthService', () => {
   let mockProducerService: Partial<ProducerService>;
   let users: User[];
 
-  jest.useFakeTimers();
-
   beforeEach(async () => {
     users = [];
     mockProducerService = {
