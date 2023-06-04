@@ -11,7 +11,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private repo: Repository<User>,
     private producerService: ProducerService,
-  ) { }
+  ) {}
 
   async create(
     email: string,
