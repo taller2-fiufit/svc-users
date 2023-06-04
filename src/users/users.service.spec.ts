@@ -37,7 +37,7 @@ describe('UsersService', () => {
     expect(user.isAdmin).toBe(false);
   });
 
-  it('debe arrojar excpecion cuando quiero encontrar un usuario que no existe', async () => {
+  it('debe arrojar excepcion cuando quiero encontrar un usuario que no existe', async () => {
     await expect(service.findOne(1)).rejects.toThrow(NotFoundException);
   });
 
@@ -127,5 +127,48 @@ describe('UsersService', () => {
     expect(user.id).toBe(1);
     await service.remove(1);
     await expect(service.findOne(1)).rejects.toThrow(NotFoundException);
+  });
+
+  it('has to return users nearer than X kms, ordered by distance', async () => {
+    await service.create(
+      'jondoe1@kinetix.com',
+      'Temporal1234',
+      'Normal User1',
+      false,
+      'soy user prueba',
+      'Buenos Aires',
+      'Argentina',
+      0.0,
+      0.0,
+      '',
+    );
+    await service.create(
+      'jondoe2@kinetix.com',
+      'Temporal1234',
+      'Normal User2',
+      false,
+      'soy user prueba',
+      'Buenos Aires',
+      'Argentina',
+      0.1,
+      0,
+      '',
+    );
+    await service.create(
+      'jondoe3@kinetix.com',
+      'Temporal1234',
+      'Normal User2',
+      false,
+      'soy user prueba',
+      'Buenos Aires',
+      'Argentina',
+      32.0,
+      15.0,
+      '',
+    );
+    const result = await service.findByDistance(0.0, 0.0, 20.0);
+    expect(result.length).toBe(2);
+    expect(result[0].email).toBe('jondoe1@kinetix.com');
+    expect(result[1].email).toBe('jondoe2@kinetix.com');
   });
 });

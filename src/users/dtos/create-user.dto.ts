@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNumber, IsString } from 'class-validator';
+import { IsEmail, IsNumber, IsString, Max, Min } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -27,10 +27,14 @@ export class CreateUserDto {
   country: string;
 
   @IsNumber()
+  @Max(90.0)
+  @Min(-90.0)
   @ApiProperty()
   latitude: number;
 
   @IsNumber()
+  @Max(180.0)
+  @Min(-180.0)
   @ApiProperty()
   longitude: number;
 }

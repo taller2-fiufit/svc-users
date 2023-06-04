@@ -52,6 +52,24 @@ export class UsersService {
     return this.repo.find({ where: { isAdmin: false } });
   }
 
+  findByDistance(latitude: number, longitude: number, maxDistance: number) {
+    const DISTANCE_FORMULA = `ASIN(SQRT(
+      POWER(SIN(RADIANS(user.latitude - ${latitude})/2), 2)
+      + POWER(SIN(RADIANS(user.longitude - ${longitude})/2), 2)
+      * COS(RADIANS(${latitude})) * COS(RADIANS(user.latitude))
+      )) * 12756.2`;
+    return this.repo
+      .createQueryBuilder('user')
+      .select('user')
+      .addSelect(DISTANCE_FORMULA, 'distance')
+      .where('NOT user.isAdmin')
+      .andWhere(`${DISTANCE_FORMULA} < :maxDistance`, {
+        maxDistance,
+      })
+      .orderBy('distance', 'ASC', 'NULLS LAST')
+      .getMany();
+  }
+
   async update(id: number, attrs: Partial<User>) {
     const user = await this.findOne(id);
     Object.assign(user, attrs);
