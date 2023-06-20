@@ -51,16 +51,16 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                 node-version: 'latest'
-                cache: 'npm'
+                cache: 'yarn'
             - name: Install dependencies
-              run: npm install
+              run: yarn install
             - name: Run Lint
-              run: npm run lint
+              run: yarn lint
             - name: Run Unit Tests
-              run: npm test
+              run: yarn test
             - name: Run Functional Tests
-              run: npm run test:e2e
+              run: yarn test:e2e
             - name: Generate Coverage
-              run: npm run test:cov
+              run: yarn test:cov
             - name: Upload Coverage
               uses: codecov/codecov-action@v3
