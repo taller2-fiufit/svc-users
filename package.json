@@ -22,11 +22,11 @@
     "typeorm": "typeorm-ts-node-commonjs -d src/data-source.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-sqs": "^3.321.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.3",
-    "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.3.0",
     "@nestjs/typeorm": "^9.0.1",
@@ -41,9 +41,11 @@
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.12"
+    "typeorm": "^0.3.12",
+    "webpack": "^5.0.0"
   },
   "devDependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.10",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",

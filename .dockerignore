@@ -1,0 +1,6 @@
+node-modules
+coverage
+.github
+dist
+test
+k8s
