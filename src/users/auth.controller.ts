@@ -1,16 +1,8 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Delete,
-  UseGuards,
-  Req,
-} from '@nestjs/common';
+import { Body, Controller, Post, Delete, UseGuards, Req } from '@nestjs/common';
 import { SigninUserDto } from './dtos/signin-user.dto';
 import { AuthService } from './auth.service';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard as PassportGuard } from '@nestjs/passport';
+import { GoogleGuard } from '../guards/google.guard';
 
 @Controller('tokens')
 @ApiTags('Auth')
@@ -23,20 +15,10 @@ export class AuthController {
     return token;
   }
 
-  // Gracias ESLINT por no entender que la funcion no estaba vacía si no que la logica
-  // se manejaba con el decorator
-  @Get('google')
-  @UseGuards(PassportGuard('google'))
-  async googleSignin(@Req() req) {
-    () => {
-      return null;
-    };
-  }
-
-  @Get('google/redirect')
-  @UseGuards(PassportGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req);
+  @Post('/google')
+  @UseGuards(GoogleGuard)
+  async googleLogin(@Req() request: any) {
+    return this.authService.googleLogin(request['googleUser']);
   }
 
   // TODO: Invalidar token

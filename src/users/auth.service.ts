@@ -114,19 +114,19 @@ export class AuthService {
     }
   }
 
-  async googleLogin(req) {
-    if (!req.user) {
+  async googleLogin(googleUser) {
+    if (!googleUser) {
       throw new BadRequestException('Usuario Google Invalido');
     }
-    let [user] = await this.userService.find(req.user.email);
+    let [user] = await this.userService.find(googleUser.email);
     if (!user) {
       const salt = randomBytes(8).toString('hex');
-      const hash = (await scrypt(req.user.accessToken, salt, 32)) as Buffer;
+      const hash = (await scrypt(googleUser.accessToken, salt, 32)) as Buffer;
       const result = salt + '.' + hash.toString('hex');
       user = await this.userService.create(
-        req.user.email,
+        googleUser.email,
         result,
-        req.user.firstName + ' ' + req.user.lastName,
+        googleUser.firstName + ' ' + googleUser.lastName,
         false,
         '',
         '',
