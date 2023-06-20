@@ -11,7 +11,6 @@ import { AuthController } from './auth.controller';
 import { ProducerModule } from '../producer/producer.module';
 import { ProducerService } from '../producer/producer.service';
 import { FollowersController } from './followers.controller';
-import { GoogleStrategy } from './login-strategies/google.strategy';
 
 @Module({
   imports: [
@@ -31,7 +30,6 @@ import { GoogleStrategy } from './login-strategies/google.strategy';
   providers: [
     UsersService,
     AuthService,
-    GoogleStrategy,
     ProducerService,
     {
       provide: APP_INTERCEPTOR,
