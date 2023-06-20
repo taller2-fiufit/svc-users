@@ -134,6 +134,10 @@ export class UsersService {
     return user.followees;
   }
 
+  async getCount() {
+    return (await this.findAll()).length;
+  }
+
   createUserEvent(command: string, userDto: UserDto): CreateMetricDto {
     const metric = new CreateMetricDto();
     metric.service = 'users';
