@@ -65,6 +65,15 @@ export class UsersController {
     return user;
   }
 
+  @Get('users/count')
+  @UseGuards(AuthGuard)
+  async getUsersCount(@CurrentUser() user: User) {
+    if (!user.isAdmin) {
+      throw new UnauthorizedException();
+    }
+    return this.usersService.getCount();
+  }
+
   @Get('users/:id')
   findUser(@Param('id') id: string) {
     return this.usersService.findOne(parseInt(id));
@@ -98,7 +107,6 @@ export class UsersController {
   @Delete('users/:id')
   @UseGuards(AuthGuard)
   deleteUser(@Param('id') id: string, @CurrentUser() user: User) {
-    console.log(user);
     if (user.id != parseInt(id) && !user.isAdmin) {
       throw new UnauthorizedException();
     }

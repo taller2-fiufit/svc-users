@@ -171,4 +171,23 @@ describe('UsersService', () => {
     expect(result[0].email).toBe('jondoe1@kinetix.com');
     expect(result[1].email).toBe('jondoe2@kinetix.com');
   });
+
+  it('devuelve la cantidad correcta de usuarios', async () => {
+    let count = await service.getCount();
+    expect(count).toBe(0);
+    await service.create(
+      'jondoe3@kinetix.com',
+      'Temporal1234',
+      'Normal User2',
+      false,
+      'soy user prueba',
+      'Buenos Aires',
+      'Argentina',
+      32.0,
+      15.0,
+      '',
+    );
+    count = await service.getCount();
+    expect(count).toBe(1);
+  });
 });
