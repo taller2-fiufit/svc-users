@@ -9,6 +9,7 @@ import {
   UseGuards,
   UnauthorizedException,
   Query,
+  Logger,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { CreateAdminDto } from './dtos/create-admin.dto';
@@ -32,8 +33,11 @@ export class UsersController {
     private authService: AuthService,
   ) {}
 
+  private readonly logger = new Logger(UsersController.name);
+
   @Post('users')
   async signup(@Body() body: CreateUserDto) {
+    this.logger.log(`POST /users`);
     return this.authService.signup(
       body.email,
       body.password,
@@ -49,6 +53,7 @@ export class UsersController {
   @Post('admin')
   @UseGuards(AuthGuard)
   createAdminUser(@CurrentUser() user: User, @Body() body: CreateAdminDto) {
+    this.logger.log(`POST /admin`);
     if (!user.isAdmin) {
       throw new UnauthorizedException();
     }
@@ -62,12 +67,14 @@ export class UsersController {
   @Get('users/me')
   @UseGuards(AuthGuard)
   whoAmI(@CurrentUser() user: User) {
+    this.logger.log(`GET /users/me`);
     return user;
   }
 
   @Get('users/count')
   @UseGuards(AuthGuard)
   async getUsersCount(@CurrentUser() user: User) {
+    this.logger.log(`GET /users/count`);
     if (!user.isAdmin) {
       throw new UnauthorizedException();
     }
@@ -76,6 +83,7 @@ export class UsersController {
 
   @Get('users/:id')
   findUser(@Param('id') id: string) {
+    this.logger.log(`GET /users/${id}`);
     return this.usersService.findOne(parseInt(id));
   }
 
@@ -87,6 +95,7 @@ export class UsersController {
     @Query('longitude') longitude?: number,
     @Query('maxDistance') maxDistance?: number,
   ) {
+    this.logger.log(`GET /users`);
     // Return all users
     if (maxDistance === undefined) {
       return this.usersService.findAll();
@@ -107,6 +116,7 @@ export class UsersController {
   @Delete('users/:id')
   @UseGuards(AuthGuard)
   deleteUser(@Param('id') id: string, @CurrentUser() user: User) {
+    this.logger.log(`DELETE /users/${id}`);
     if (user.id != parseInt(id) && !user.isAdmin) {
       throw new UnauthorizedException();
     }
@@ -120,6 +130,7 @@ export class UsersController {
     @Body() body: UpdateUserDto,
     @CurrentUser() user: User,
   ) {
+    this.logger.log(`PATCH /users/${id}`);
     if (user.id != parseInt(id) && !user.isAdmin) {
       throw new UnauthorizedException();
     }
@@ -133,6 +144,7 @@ export class UsersController {
     @Body() body: ChangeStatusUserDto,
     @CurrentUser() user: User,
   ) {
+    this.logger.log(`PATCH /users/${id}/status`);
     if (!user.isAdmin) {
       throw new UnauthorizedException();
     }

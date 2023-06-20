@@ -2,6 +2,7 @@ import {
   BadRequestException,
   UnauthorizedException,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
@@ -18,6 +19,8 @@ export class AuthService {
     private jwtService: JwtService,
     private producerService: ProducerService,
   ) {}
+
+  private readonly logger = new Logger(AuthService.name);
 
   async signup(
     email: string,
@@ -54,7 +57,7 @@ export class AuthService {
         this.userService.userToDto(user),
       ),
     );
-
+    this.logger.log(`Usuario Singupeado: ${email}`);
     return user;
   }
 
@@ -67,6 +70,7 @@ export class AuthService {
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const result = salt + '.' + hash.toString('hex');
+    this.logger.log(`Administrador Creado: ${email}`);
     return this.userService.create(
       email,
       result,
@@ -108,6 +112,8 @@ export class AuthService {
         ),
       );
 
+      this.logger.log(`Usuario Singineado: ${user.email}`);
+
       return { access_token: await this.jwtService.signAsync(payload) };
     } catch (error) {
       throw error;
@@ -148,6 +154,7 @@ export class AuthService {
       ),
     );
     const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
+    this.logger.log(`Usuario Singineado con Google: ${user.email}`);
     return { access_token: await this.jwtService.signAsync(payload) };
   }
 }
