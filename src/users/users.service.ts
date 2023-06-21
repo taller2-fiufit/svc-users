@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
 import { UserDto } from './dtos/user.dto';
@@ -8,6 +8,8 @@ import { CreateMetricDto } from './dtos/create-metric.dto';
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
+
+  private readonly logger = new Logger(UsersService.name);
 
   async create(
     email: string,
@@ -33,18 +35,22 @@ export class UsersService {
       longitude,
       profileimage,
     });
+    this.logger.log(`Usuario Creado: ${email}`);
     return this.repo.save(user);
   }
 
   async findOne(id: number) {
     const user = await this.repo.findOneBy({ id });
     if (!user) {
+      this.logger.warn(`Usuario con id: ${id} no encontrado`);
       throw new NotFoundException();
     }
+    this.logger.log(`Usuario Encontrado: ${user.email}`);
     return user;
   }
 
   find(email: string) {
+    this.logger.log(`Usuario Encontrado: ${email}`);
     return this.repo.find({ where: { email } });
   }
 
@@ -73,11 +79,13 @@ export class UsersService {
   async update(id: number, attrs: Partial<User>) {
     const user = await this.findOne(id);
     Object.assign(user, attrs);
+    this.logger.log(`Usuario Actualizado: ${user.email}`);
     return this.repo.save(user);
   }
 
   async remove(id: number) {
     const user = await this.findOne(id);
+    this.logger.log(`Usuario Removido: ${user.email}`);
     return this.repo.remove([user]);
   }
 
@@ -89,6 +97,7 @@ export class UsersService {
     const followee = await this.findOne(followeeId);
 
     follower.followees.push(followee);
+    this.logger.log(`Usuario ${follower.email} sigue a ${followee.email}`);
     await this.repo.save(follower);
     return;
   }
@@ -105,6 +114,9 @@ export class UsersService {
     }
 
     follower.followees = follower.followees.filter((u) => u.id != followeeId);
+    this.logger.log(
+      `Usuario ${follower.email} deja de seguir a ${followee.email}`,
+    );
     await this.repo.save(follower);
   }
 
@@ -144,6 +156,9 @@ export class UsersService {
     metric.command = command;
     metric.timestamp = new Date(Date.now());
     metric.attrs = JSON.stringify(userDto);
+    this.logger.debug(
+      `Se crea evento. COMANDO: ${metric.command} - ATTRS: ${metric.attrs}`,
+    );
     return metric;
   }
 
