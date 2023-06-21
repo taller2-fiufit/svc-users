@@ -73,7 +73,6 @@ export class UsersController {
     return user;
   }
 
-  
   @Get('users/count')
   @UseGuards(AuthGuard)
   async getUsersCount(@CurrentUser() user: User) {

@@ -148,7 +148,7 @@ export class UsersService {
 
   async getCount() {
     const count = (await this.findAll()).length;
-    return { count: count }
+    return { count: count };
   }
 
   createUserEvent(command: string, userDto: UserDto): CreateMetricDto {
