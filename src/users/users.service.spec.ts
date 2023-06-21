@@ -174,7 +174,7 @@ describe('UsersService', () => {
 
   it('devuelve la cantidad correcta de usuarios', async () => {
     let count = await service.getCount();
-    expect(count).toBe(0);
+    expect(count.count).toBe(0);
     await service.create(
       'jondoe3@kinetix.com',
       'Temporal1234',
@@ -188,6 +188,6 @@ describe('UsersService', () => {
       '',
     );
     count = await service.getCount();
-    expect(count).toBe(1);
+    expect(count.count).toBe(1);
   });
 });

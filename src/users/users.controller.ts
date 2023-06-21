@@ -26,7 +26,6 @@ import { ApiTags } from '@nestjs/swagger';
 
 @Controller('')
 @ApiTags('Users')
-@Serialize(UserDto)
 export class UsersController {
   constructor(
     private usersService: UsersService,
@@ -35,6 +34,7 @@ export class UsersController {
 
   private readonly logger = new Logger(UsersController.name);
 
+  @Serialize(UserDto)
   @Post('users')
   async signup(@Body() body: CreateUserDto) {
     this.logger.log(`POST /users`);
@@ -50,6 +50,7 @@ export class UsersController {
     );
   }
 
+  @Serialize(UserDto)
   @Post('admin')
   @UseGuards(AuthGuard)
   createAdminUser(@CurrentUser() user: User, @Body() body: CreateAdminDto) {
@@ -64,6 +65,7 @@ export class UsersController {
     );
   }
 
+  @Serialize(UserDto)
   @Get('users/me')
   @UseGuards(AuthGuard)
   whoAmI(@CurrentUser() user: User) {
@@ -81,12 +83,14 @@ export class UsersController {
     return this.usersService.getCount();
   }
 
+  @Serialize(UserDto)
   @Get('users/:id')
   findUser(@Param('id') id: string) {
     this.logger.log(`GET /users/${id}`);
     return this.usersService.findOne(parseInt(id));
   }
 
+  @Serialize(UserDto)
   @Get('users')
   @UseGuards(AuthGuard)
   async findAllUsers(
@@ -113,6 +117,7 @@ export class UsersController {
     return result.filter((u) => u.id !== user.id);
   }
 
+  @Serialize(UserDto)
   @Delete('users/:id')
   @UseGuards(AuthGuard)
   deleteUser(@Param('id') id: string, @CurrentUser() user: User) {
@@ -123,6 +128,7 @@ export class UsersController {
     return this.usersService.remove(parseInt(id));
   }
 
+  @Serialize(UserDto)
   @Patch('users/:id')
   @UseGuards(AuthGuard)
   updateUser(
@@ -137,6 +143,7 @@ export class UsersController {
     return this.usersService.update(parseInt(id), body);
   }
 
+  @Serialize(UserDto)
   @Patch('users/:id/status')
   @UseGuards(AuthGuard)
   updateUserStatus(
