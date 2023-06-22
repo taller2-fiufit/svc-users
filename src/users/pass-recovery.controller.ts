@@ -1,8 +1,9 @@
-import { Controller, Logger, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Logger, Body, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { PassRecoveryService } from './pass-recovery.service';
+import { RecoveryPasswordDto } from './dtos/recovery-password.dto';
 
-@Controller('users/:id/password')
+@Controller('users/password')
 @ApiTags('Password Recovery')
 export class PassRecoveryController {
     constructor(
@@ -12,10 +13,11 @@ export class PassRecoveryController {
     private readonly logger = new Logger(PassRecoveryController.name);
 
     @Post('')
-    async sendRecoveryToken(@Param('id') id: string) {
+    async sendRecoveryToken(@Body() body: RecoveryPasswordDto) {
         try {
-            this.logger.log((`POST /users/${id}/password`));
-            const user = await this.passRecoveryService.generateRecoveryToken(parseInt(id));
+            this.logger.log((`POST /users/password`));
+            const user = await this.passRecoveryService.generateRecoveryToken(body.email);
+            this.logger.debug(user.passRecoveryToken);
             return {message: `Mail enviado a ${user.email}`}
         } catch (e) {
             throw e;

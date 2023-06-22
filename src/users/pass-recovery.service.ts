@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
 import { AuthService } from './auth.service';
@@ -13,14 +13,13 @@ export class PassRecoveryService {
 
     private readonly logger = new Logger(PassRecoveryService.name);
 
-    async generateRecoveryToken(id: number) {
-        try {
-            const user: User = await this.userService.findOne(id);
-            const passRecoveryToken = await this.authService.generateRecoveryToken(user.id)
-            return await this.userService.update(user.id, { passRecoveryToken })
+    async generateRecoveryToken(email: string) {
+        const users = await this.userService.find(email);
+        if (users.length == 0) {
+            this.logger.warn(`Usuario con email: ${email} no encontrado`);
+            throw new NotFoundException();
         }
-        catch (e) {
-            throw e
-        }
+        const passRecoveryToken = await this.authService.generateRecoveryToken(users[0].email)
+        return await this.userService.update(users[0].id, { passRecoveryToken })
     }
 }

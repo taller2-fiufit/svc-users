@@ -161,10 +161,10 @@ export class AuthService {
     return { access_token: await this.jwtService.signAsync(payload) };
   }
 
-  async generateRecoveryToken(id: number) {
+  async generateRecoveryToken(email: string) {
     const uuid = randomBytes(32).toString('hex')
     const exp = (Date.now() / 1000 + this.RECOVERY_PASS_TOKEN_EXP);
-    const payload = { sub: id, uuid: uuid, exp: exp }
+    const payload = { sub: email, uuid: uuid, exp: exp }
     return await this.jwtService.signAsync(payload)
   }
 }
