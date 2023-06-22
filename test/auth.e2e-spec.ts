@@ -132,7 +132,7 @@ describe('Sistema de Autenticación', () => {
     const COUNTRY = 'Argentina';
     const LATITUDE = 37.5;
     const LONGITUDE = -37.5;
-    const PUSH_TOKEN = 'prueba'
+    const PUSH_TOKEN = 'prueba';
 
     await request(app.getHttpServer())
       .post('/users')
@@ -158,18 +158,18 @@ describe('Sistema de Autenticación', () => {
 
     response = await request(app.getHttpServer())
       .get('/users/me')
-      .set('Authorization', 'Bearer ' + token)
+      .set('Authorization', 'Bearer ' + token);
 
-    const userId = response.body['id']
+    const userId = response.body['id'];
 
     response = await request(app.getHttpServer())
       .patch(`/users/${userId}`)
       .set('Authorization', 'Bearer ' + token)
-      .send({ pushToken: PUSH_TOKEN})
-      .expect(200)
+      .send({ pushToken: PUSH_TOKEN })
+      .expect(200);
 
-    expect(response.body['pushToken']).toBe(PUSH_TOKEN)
-  })
+    expect(response.body['pushToken']).toBe(PUSH_TOKEN);
+  });
 
   it('creo un nuevo usuario y luego puedo borrarlo', async () => {
     const EMAIL = 'prueba@kinetix.com';
@@ -211,10 +211,10 @@ describe('Sistema de Autenticación', () => {
     await request(app.getHttpServer())
       .delete(`/users/${response.body['id']}`)
       .set('Authorization', 'Bearer ' + token)
-      .expect(200)
+      .expect(200);
 
     await request(app.getHttpServer())
       .get(`/users/${response.body['id']}`)
-      .expect(404)
+      .expect(404);
   });
 });
