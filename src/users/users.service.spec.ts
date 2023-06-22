@@ -190,4 +190,23 @@ describe('UsersService', () => {
     count = await service.getCount();
     expect(count.count).toBe(1);
   });
+
+  it('pushToken es null por default y puede ser cambiado', async () => {
+    let user = await service.create(
+      'jondoe2@kinetix.com',
+      'Temporal1234',
+      'Normal User2',
+      false,
+      'soy user prueba',
+      'Buenos Aires',
+      'Argentina',
+      0.1,
+      0,
+      '',
+    );
+    expect(user.pushToken).toBeNull();
+    await service.update(user.id, { pushToken: 'prueba' });
+    user = await service.findOne(user.id);
+    expect(user.pushToken).toBe('prueba');
+  });
 });

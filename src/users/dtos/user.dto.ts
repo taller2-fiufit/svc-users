@@ -51,4 +51,8 @@ export class UserDto {
   @Expose()
   @ApiProperty()
   blocked: boolean;
+
+  @Expose()
+  @ApiProperty()
+  pushToken: string;
 }

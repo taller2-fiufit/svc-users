@@ -52,6 +52,9 @@ export class User {
   @Column({ default: false })
   blocked: boolean;
 
+  @Column({ default: null, nullable: true })
+  pushToken: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

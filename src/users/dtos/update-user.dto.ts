@@ -46,4 +46,9 @@ export class UpdateUserDto {
   @IsOptional()
   @ApiProperty()
   profileimage: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  pushToken: string;
 }
