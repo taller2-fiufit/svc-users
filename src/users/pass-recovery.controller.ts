@@ -17,7 +17,6 @@ export class PassRecoveryController {
         try {
             this.logger.log((`POST /users/password`));
             const user = await this.passRecoveryService.generateRecoveryToken(body.email);
-            this.logger.debug(user.passRecoveryToken);
             return {message: `Mail enviado a ${user.email}`}
         } catch (e) {
             throw e;
