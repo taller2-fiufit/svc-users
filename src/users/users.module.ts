@@ -11,6 +11,8 @@ import { AuthController } from './auth.controller';
 import { ProducerModule } from '../producer/producer.module';
 import { ProducerService } from '../producer/producer.service';
 import { FollowersController } from './followers.controller';
+import { PassRecoveryController } from './pass-recovery.controller';
+import { PassRecoveryService } from './pass-recovery.service';
 
 @Module({
   imports: [
@@ -20,13 +22,12 @@ import { FollowersController } from './followers.controller';
       useFactory: () => {
         return {
           global: true,
-          secret: process.env.JWT_SECRET,
-          signOptions: { expiresIn: '60000s' },
+          secret: process.env.JWT_SECRET
         };
       },
     }),
   ],
-  controllers: [UsersController, AuthController, FollowersController],
+  controllers: [UsersController, AuthController, FollowersController, PassRecoveryController],
   providers: [
     UsersService,
     AuthService,
@@ -35,6 +36,7 @@ import { FollowersController } from './followers.controller';
       provide: APP_INTERCEPTOR,
       useClass: CurrentUserInterceptor,
     },
+    PassRecoveryService,
   ],
 })
 export class UsersModule {

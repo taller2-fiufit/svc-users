@@ -55,6 +55,9 @@ export class User {
   @Column({ default: null, nullable: true })
   pushToken: string;
 
+  @Column({ default: null, nullable: true })
+  passRecoveryToken: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

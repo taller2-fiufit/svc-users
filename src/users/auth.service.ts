@@ -22,6 +22,9 @@ export class AuthService {
 
   private readonly logger = new Logger(AuthService.name);
 
+  private SIGN_IN_TOKEN_EXP = 6000;
+  private RECOVERY_PASS_TOKEN_EXP = 600;
+
   async signup(
     email: string,
     password: string,
@@ -103,7 +106,7 @@ export class AuthService {
         throw new BadRequestException('Email y password no corresponden');
       }
 
-      const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
+      const payload = { email: user.email, sub: user.id, admin: user.isAdmin, exp: Date.now() / 1000 + this.SIGN_IN_TOKEN_EXP};
 
       this.producerService.dispatchMetric(
         this.userService.createUserEvent(
@@ -153,8 +156,15 @@ export class AuthService {
         this.userService.userToDto(user),
       ),
     );
-    const payload = { email: user.email, sub: user.id, admin: user.isAdmin };
+    const payload = { email: user.email, sub: user.id, admin: user.isAdmin, exp: Date.now() /1000 + this.SIGN_IN_TOKEN_EXP };
     this.logger.log(`Usuario Singineado con Google: ${user.email}`);
     return { access_token: await this.jwtService.signAsync(payload) };
+  }
+
+  async generateRecoveryToken(id: number) {
+    const uuid = randomBytes(32).toString('hex')
+    const exp = (Date.now() / 1000 + this.RECOVERY_PASS_TOKEN_EXP);
+    const payload = { sub: id, uuid: uuid, exp: exp }
+    return await this.jwtService.signAsync(payload)
   }
 }
