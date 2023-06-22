@@ -30,6 +30,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.3.0",
     "@nestjs/typeorm": "^9.0.1",
+    "@sendgrid/mail": "^7.7.0",
     "@ssut/nestjs-sqs": "^2.0.0",
     "@types/cookie-session": "^2.0.44",
     "aws-sdk": "^2.1371.0",

@@ -13,25 +13,34 @@ import { ProducerService } from '../producer/producer.service';
 import { FollowersController } from './followers.controller';
 import { PassRecoveryController } from './pass-recovery.controller';
 import { PassRecoveryService } from './pass-recovery.service';
+import { MailingModule } from '../mailing/mailing.module';
+import { SendMailService } from '../mailing/send-mail.service';
 
 @Module({
   imports: [
     ProducerModule,
+    MailingModule,
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       useFactory: () => {
         return {
           global: true,
-          secret: process.env.JWT_SECRET
+          secret: process.env.JWT_SECRET,
         };
       },
     }),
   ],
-  controllers: [UsersController, AuthController, FollowersController, PassRecoveryController],
+  controllers: [
+    PassRecoveryController,
+    UsersController,
+    AuthController,
+    FollowersController,
+  ],
   providers: [
     UsersService,
     AuthService,
     ProducerService,
+    SendMailService,
     {
       provide: APP_INTERCEPTOR,
       useClass: CurrentUserInterceptor,

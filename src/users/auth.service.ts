@@ -39,9 +39,8 @@ export class AuthService {
     if (users.length) {
       throw new BadRequestException('Email en uso');
     }
-    const salt = randomBytes(8).toString('hex');
-    const hash = (await scrypt(password, salt, 32)) as Buffer;
-    const result = salt + '.' + hash.toString('hex');
+    const result = await this.generatePassword(password);
+    password;
     const user = await this.userService.create(
       email,
       result,
@@ -70,9 +69,7 @@ export class AuthService {
     if (users.length) {
       throw new BadRequestException('Email en uso');
     }
-    const salt = randomBytes(8).toString('hex');
-    const hash = (await scrypt(password, salt, 32)) as Buffer;
-    const result = salt + '.' + hash.toString('hex');
+    const result = await this.generatePassword(password);
     this.logger.log(`Administrador Creado: ${email}`);
     return this.userService.create(
       email,
@@ -106,7 +103,12 @@ export class AuthService {
         throw new BadRequestException('Email y password no corresponden');
       }
 
-      const payload = { email: user.email, sub: user.id, admin: user.isAdmin, exp: Date.now() / 1000 + this.SIGN_IN_TOKEN_EXP};
+      const payload = {
+        email: user.email,
+        sub: user.id,
+        admin: user.isAdmin,
+        exp: Date.now() / 1000 + this.SIGN_IN_TOKEN_EXP,
+      };
 
       this.producerService.dispatchMetric(
         this.userService.createUserEvent(
@@ -129,9 +131,7 @@ export class AuthService {
     }
     let [user] = await this.userService.find(googleUser.email);
     if (!user) {
-      const salt = randomBytes(8).toString('hex');
-      const hash = (await scrypt(googleUser.accessToken, salt, 32)) as Buffer;
-      const result = salt + '.' + hash.toString('hex');
+      const result = await this.generatePassword(googleUser.accessToken);
       user = await this.userService.create(
         googleUser.email,
         result,
@@ -156,15 +156,33 @@ export class AuthService {
         this.userService.userToDto(user),
       ),
     );
-    const payload = { email: user.email, sub: user.id, admin: user.isAdmin, exp: Date.now() /1000 + this.SIGN_IN_TOKEN_EXP };
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      admin: user.isAdmin,
+      exp: Date.now() / 1000 + this.SIGN_IN_TOKEN_EXP,
+    };
     this.logger.log(`Usuario Singineado con Google: ${user.email}`);
     return { access_token: await this.jwtService.signAsync(payload) };
   }
 
-  async generateRecoveryToken(email: string) {
-    const uuid = randomBytes(32).toString('hex')
-    const exp = (Date.now() / 1000 + this.RECOVERY_PASS_TOKEN_EXP);
-    const payload = { sub: email, uuid: uuid, exp: exp }
-    return await this.jwtService.signAsync(payload)
+  async generateRecoveryToken(id: number) {
+    const uuid = randomBytes(32).toString('hex');
+    const exp = Date.now() / 1000 + this.RECOVERY_PASS_TOKEN_EXP;
+    const payload = { sub: id, uuid: uuid, exp: exp };
+    return await this.jwtService.signAsync(payload);
+  }
+
+  async generatePassword(password: string) {
+    const salt = randomBytes(8).toString('hex');
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+    const result = salt + '.' + hash.toString('hex');
+    return result;
+  }
+
+  async validateToken(token: string) {
+    return await this.jwtService.verifyAsync(token, {
+      secret: process.env.JWT_SECRET,
+    });
   }
 }
