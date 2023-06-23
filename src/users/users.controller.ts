@@ -131,7 +131,7 @@ export class UsersController {
   @Serialize(UserDto)
   @Patch('users/:id')
   @UseGuards(AuthGuard)
-  updateUser(
+  async updateUser(
     @Param('id') id: string,
     @Body() body: UpdateUserDto,
     @CurrentUser() user: User,
@@ -139,6 +139,9 @@ export class UsersController {
     this.logger.log(`PATCH /users/${id}`);
     if (user.id != parseInt(id) && !user.isAdmin) {
       throw new UnauthorizedException();
+    }
+    if (body.password) {
+      body.password = await this.authService.generatePassword(body.password);
     }
     return this.usersService.update(parseInt(id), body);
   }

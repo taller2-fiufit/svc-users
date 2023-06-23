@@ -7,6 +7,7 @@ import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { ProducerModule } from './producer/producer.module';
+import { MailingModule } from './mailing/mailing.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ProducerModule } from './producer/producer.module';
     }),
     UsersModule,
     ProducerModule,
+    MailingModule,
   ],
   controllers: [AppController],
   providers: [
