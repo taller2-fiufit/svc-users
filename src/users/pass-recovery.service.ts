@@ -18,6 +18,9 @@ export class PassRecoveryService {
 
   private readonly logger = new Logger(PassRecoveryService.name);
 
+  private PASS_RESET_URL =
+    'https://web-reset-password-fedecolangelo.cloud.okteto.net';
+
   async generateRecoveryMail(email: string) {
     const users = await this.userService.find(email);
     if (users.length == 0) {
@@ -31,7 +34,7 @@ export class PassRecoveryService {
       to: users[0].email,
       subject: 'Kinetix - Servicio de Recupero de Contraseñas',
       from: 'fcolangelo@fi.uba.ar',
-      text: passRecoveryToken,
+      html: `<p>Para recuperar su password haga click en el siguiente <a href="${this.PASS_RESET_URL}/?token=${passRecoveryToken}">link</a></p>`,
     };
     this.mailService.send(mail);
     return await this.userService.update(users[0].id, { passRecoveryToken });
