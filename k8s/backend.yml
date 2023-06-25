@@ -47,6 +47,11 @@ spec:
                 secretKeyRef:
                   name: secrets
                   key: SENDGRID_API_KEY
+            - name: NEW_RELIC_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: NEW_RELIC_LICENSE_KEY
           ports:
             - containerPort: 3000
           readinessProbe:
