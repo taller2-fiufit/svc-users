@@ -20,7 +20,7 @@ data:
   QUEUE_URL: https://sqs.us-east-1.amazonaws.com/228452873325/MetricsQueue_Production
   GOOGLE_CLIENT_ID: 845362248271-63n1s9kta7m0bvnb5lb88oci793aam2i.apps.googleusercontent.com
   GOOGLE_CALLBACK_URL: https://svc-users-fedecolangelo.cloud.okteto.net/tokens/google/redirect
-  NEW_RELIC_NO_CONFIG_FILE: true
-  NEW_RELIC_DISTRIBUTED_TRACING_ENABLED: true
+  NEW_RELIC_NO_CONFIG_FILE: "true"
+  NEW_RELIC_DISTRIBUTED_TRACING_ENABLED: "true"
   NEW_RELIC_LOG: stdout
   NEW_RELIC_APP_NAME: "Kinetix"
