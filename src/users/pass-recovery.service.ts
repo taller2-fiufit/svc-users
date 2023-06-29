@@ -15,7 +15,7 @@ export class PassRecoveryService {
     private userService: UsersService,
     private authService: AuthService,
     private mailService: SendMailService,
-    private producerService: ProducerService
+    private producerService: ProducerService,
   ) {}
 
   private readonly logger = new Logger(PassRecoveryService.name);

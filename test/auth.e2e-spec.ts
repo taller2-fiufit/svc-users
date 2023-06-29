@@ -217,4 +217,70 @@ describe('Sistema de Autenticación', () => {
       .get(`/users/${response.body['id']}`)
       .expect(404);
   });
+
+  it('sigo y dejo de seguir gentes', async () => {
+    const EMAIL1 = 'prueba1@kinetix.com';
+    const EMAIL2 = 'prueba2@kinetix.com';
+    const FULLNAME = 'Prueba Kinetix';
+    const PASSWORD = 'Temporal1234';
+    const DESCRIPTION = '';
+    const CITY = 'Buenos Aires';
+    const COUNTRY = 'Argentina';
+    const LATITUDE = 37.5;
+    const LONGITUDE = -37.5;
+
+    const user1 = await request(app.getHttpServer())
+      .post('/users')
+      .send({
+        email: EMAIL1,
+        password: PASSWORD,
+        fullname: FULLNAME,
+        description: DESCRIPTION,
+        city: CITY,
+        country: COUNTRY,
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+      })
+      .expect(201);
+
+    const user2 = await request(app.getHttpServer())
+      .post('/users')
+      .send({
+        email: EMAIL2,
+        password: PASSWORD,
+        fullname: FULLNAME,
+        description: DESCRIPTION,
+        city: CITY,
+        country: COUNTRY,
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+      })
+      .expect(201);
+
+    const response = await request(app.getHttpServer())
+      .post('/tokens')
+      .send({ email: EMAIL1, password: PASSWORD })
+      .expect(201);
+
+    const token = response.body['access_token'];
+    expect(token).toBeDefined;
+
+    await request(app.getHttpServer())
+      .post(`/users/${user1.body['id']}/following/${user2.body['id']}`)
+      .set('Authorization', 'Bearer ' + token)
+      .expect(201);
+
+    await request(app.getHttpServer())
+      .get(`/users/${user1.body['id']}/followers`)
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .get(`/users/${user1.body['id']}/following`)
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .delete(`/users/${user1.body['id']}/following/${user2.body['id']}`)
+      .set('Authorization', 'Bearer ' + token)
+      .expect(200);
+  });
 });
