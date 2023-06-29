@@ -3,7 +3,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { PassRecoveryService } from './pass-recovery.service';
 import { RecoveryPasswordDto } from './dtos/recovery-password.dto';
 import { UpdatePasswordDto } from './dtos/update-password.dto';
+import { UseGuards } from '@nestjs/common';
+import { ApiKeyGuard } from '../guards/apikey.guard';
 
+@UseGuards(ApiKeyGuard)
 @Controller('users/password')
 @ApiTags('Password Recovery')
 export class PassRecoveryController {
