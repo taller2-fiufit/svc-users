@@ -7,6 +7,7 @@ import {
 import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
 import { SendMailService } from '../mailing/send-mail.service';
+import { ProducerService } from '../producer/producer.service';
 
 @Injectable()
 export class PassRecoveryService {
@@ -14,6 +15,7 @@ export class PassRecoveryService {
     private userService: UsersService,
     private authService: AuthService,
     private mailService: SendMailService,
+    private producerService: ProducerService
   ) {}
 
   private readonly logger = new Logger(PassRecoveryService.name);
@@ -54,6 +56,12 @@ export class PassRecoveryService {
         passRecoveryToken: null,
       });
       this.logger.log(`Se cambio el password de ${user.email}`);
+      this.producerService.dispatchMetric(
+        this.userService.createUserEvent(
+          'passwordReseted',
+          this.userService.userToDto(user),
+        ),
+      );
       return { message: 'Passowrd cambiado exitosamente' };
     } catch (e) {
       this.logger.error(e);
