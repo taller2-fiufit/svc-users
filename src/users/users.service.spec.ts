@@ -209,4 +209,39 @@ describe('UsersService', () => {
     user = await service.findOne(user.id);
     expect(user.pushToken).toBe('prueba');
   });
+
+  it('deberia gestionar followers', async () => {
+    const user1 = await service.create(
+      'jondoe1@kinetix.com',
+      'Temporal1234',
+      'Normal User2',
+      false,
+      'soy user prueba',
+      'Buenos Aires',
+      'Argentina',
+      0.1,
+      0,
+      '',
+    );
+    const user2 = await service.create(
+      'jondoe2@kinetix.com',
+      'Temporal1234',
+      'Normal User2',
+      false,
+      'soy user prueba',
+      'Buenos Aires',
+      'Argentina',
+      0.1,
+      0,
+      '',
+    );
+    await service.followUser(user1.id, user2.id);
+    expect((await service.getFollowers(user1.id)).length).toBe(0);
+    expect((await service.getFollowers(user2.id)).length).toBe(1);
+    expect((await service.getFollowees(user1.id)).length).toBe(1);
+    expect((await service.getFollowees(user2.id)).length).toBe(0);
+    await service.unfollowUser(user1.id, user2.id);
+    expect((await service.getFollowers(user2.id)).length).toBe(0);
+    expect((await service.getFollowees(user1.id)).length).toBe(0);
+  });
 });

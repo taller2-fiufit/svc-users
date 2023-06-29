@@ -170,4 +170,15 @@ describe('AuthService', () => {
     );
     expect(user.isAdmin).toBe(true);
   });
+
+  it('deberia loginear usuarios de google', async () => {
+    const user = {
+      email: 'prueba@gmail.com',
+      firstName: 'Prueba',
+      lastName: 'Kinetix',
+      accessToken: 'tokenardo',
+    };
+    const response = service.googleLogin(user);
+    expect((await response).access_token).not.toBe(null);
+  });
 });
