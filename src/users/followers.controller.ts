@@ -15,7 +15,9 @@ import { UsersService } from './users.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ApiKeyGuard } from '../guards/apikey.guard';
 
+@UseGuards(ApiKeyGuard)
 @Serialize(UserDto)
 @ApiTags('Followers')
 @Controller()

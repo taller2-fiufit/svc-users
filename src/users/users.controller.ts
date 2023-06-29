@@ -23,7 +23,9 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
 import { AuthGuard } from '../guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { ApiKeyGuard } from '../guards/apikey.guard';
 
+@UseGuards(ApiKeyGuard)
 @Controller('')
 @ApiTags('Users')
 export class UsersController {

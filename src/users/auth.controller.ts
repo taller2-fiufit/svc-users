@@ -11,7 +11,9 @@ import { SigninUserDto } from './dtos/signin-user.dto';
 import { AuthService } from './auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { GoogleGuard } from '../guards/google.guard';
+import { ApiKeyGuard } from '../guards/apikey.guard';
 
+@UseGuards(ApiKeyGuard)
 @Controller('tokens')
 @ApiTags('Auth')
 export class AuthController {

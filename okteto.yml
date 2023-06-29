@@ -14,5 +14,7 @@ deploy:
     --from-literal="GOOGLE_SECRET"="${GOOGLE_SECRET}"
     --from-literal="SENDGRID_API_KEY"="${SENDGRID_API_KEY}"
     --from-literal="NEW_RELIC_LICENSE_KEY"="${NEW_RELIC_LICENSE_KEY}"
+     --from-literal="METRICS_API_KEY"="${METRICS_API_KEY}"
+     --from-literal="USERS_API_KEY"="${USERS_API_KEY}"
   - kubectl apply -f k8s
   - kubectl rollout restart deployment users-backend-deployment
