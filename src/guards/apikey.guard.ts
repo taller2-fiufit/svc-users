@@ -22,7 +22,7 @@ export class ApiKeyGuard implements CanActivate {
       this.logger.debug(`Request rechazado - ApiKey: ${apikey}`);
       return false;
     }
-    this.logger.debug('Request autorizado por entorno');
+    this.logger.debug('Request autorizado');
     return true;
   }
 }
