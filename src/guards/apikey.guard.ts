@@ -1,8 +1,12 @@
-import { CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
-
   private readonly logger = new Logger(ApiKeyGuard.name);
 
   async canActivate(context: ExecutionContext) {
