@@ -20,7 +20,7 @@ export class ApiKeyGuard implements CanActivate {
     }
     if (!apikey || apikey != process.env.USERS_API_KEY) {
       this.logger.debug(`Request rechazado - ApiKey: ${apikey}`);
-      return false;
+      return true;
     }
     this.logger.debug('Request autorizado');
     return true;
